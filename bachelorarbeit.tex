@@ -14,34 +14,34 @@
 \newtheorem{lemma}{Lemma}
 \newtheorem{proposition}{Proposition}
 
-\title{Intersecting Clutters}
+\title{Intersecting clutters}
 \author{Martin Drees}
 \begin{document}
    \maketitle
    \tableofcontents
    \chapter{Introduction}
    \begin{definition}
-       Let $\mathcal{S}$ be a set of Clutters.
-       A Clutter $\mathcal{C} \in \mathcal{S}$ is called \emph{restriction-minimal} in $\mathcal{S}$ if no proper restriction of $\mathcal{C}$ is in $\mathcal{S}$.
+       Let $\mathcal{S}$ be a set of clutters.
+       A clutter $\mathcal{C} \in \mathcal{S}$ is called \emph{restriction-minimal} in $\mathcal{S}$ if no proper restriction of $\mathcal{C}$ is in $\mathcal{S}$.
    \end{definition}
 
    \begin{definition}
-       A set of Clutters is called \emph{$k$-unifying} if every restriction-minimal Clutter in this set has $k$ members whose union is the ground set.
+       A set of clutters is called \emph{$k$-unifying} if every restriction-minimal Clutter in this set has $k$ members whose union is the ground set.
    \end{definition}
 
    \begin{theorem}
-       Let $\mathcal{S}$ be a $k$-unifying set of clutters and $\mathcal{C}$ be a Clutter over ground set $V$.
+       Let $\mathcal{S}$ be a $k$-unifying set of clutters and $\mathcal{C}$ be a clutter over ground set $V$.
        Then the following two statements are equivalent:
        \leavevmode
        \begin{enumerate}[i)]
            \item $\mathcal{C}$ has a restriction in $\mathcal{S}$.
-           \item There are $k$ members $C_1, C_2, \ldots, C_k$ of $\mathcal{C}$ such that the Clutter obtained by $\mathcal{C}$ after restricting $V - \bigcup_{i=1}^k C_i$ is in $\mathcal{S}$.
+           \item There are $k$ members $C_1, C_2, \ldots, C_k$ of $\mathcal{C}$ such that the clutter obtained by $\mathcal{C}$ after restricting $V - \bigcup_{i=1}^k C_i$ is in $\mathcal{S}$.
        \end{enumerate}
    \end{theorem}
 
    \begin{proof}
        ($\impliedby$) is immediate.
-       ($\implies$) Since Clutters have finite ground set, $\mathcal{C}$ has a restriction-minimal restriction.
+       ($\implies$) Since clutters have finite ground set, $\mathcal{C}$ has a restriction-minimal restriction.
        Let this restriction be $\mathcal{C}\backslash I / J$.
        Since $\mathcal{S}$ is $k$-unifying, we find $k$ members $C_1', C_2', \ldots, C_k'$ in this restriction, such that $\bigcup_{i=1}^k C_i' = V - (I \cup J)$.
  Let $C_i = C_i' \cup J$.
@@ -86,4 +86,59 @@
    \end{proof}
 
    \chapter{Dense restrictions}
+   In this chapter we will prove, that the set of dense clutters is 3-unifying.
+   \begin{definition}
+       Let $\mathcal{C}$ be a clutter over ground set $V$ with $\tau(\mathcal{C})=2$.
+       The \emph{covering graph} of $\mathcal{C}$ with vertex set $V$ and the covers of size two of $\mathcal{C}$ as edges.
+   \end{definition}
+
+   \begin{lemma}
+       Let $\mathcal{C}$ be a clutter over ground set $V$ with $\tau(\mathcal{C})=2$, connected covering graph and a fractional packing of value 2.
+       Then the covering graph is bipartite and $\mathcal{C}$ has two members representing the colour classes, in particular there are member $L$ and $K$ of $\mathcal{C}$ with $K \cap L = \emptyset$ and $K \cup L = V$.
+   \end{lemma}
+
+   \begin{proof}
+       For $C \in \mathcal{C}$ let $x_C$ be the value assigned to $C$ in the fractional packing of value 2.
+       Let $B=\{b_1,b_2\}$ be an arbitrary cover of size 2 of $\mathcal{C}$ and $C$ be an arbitrary member of $\mathcal{C}$ with $x_{C} > 0$.
+       We first prove $|B\cap C| = 1$.
+       Since $B$ is a cover, we have $|B\cap C| \geq 1$.
+       Assume $|B \cap C| > 1$, so $B \subseteq C$.
+       We conclude
+       \begin{align*}
+           2 \geq \sum_{b_1 \in C_i} x_{C_i} + \sum_{b_2 \in C_i} x_{C_i} = \sum_{b_1 \in C_i \text{ or } b_2 \in C_i} x_{C_i} + \sum_{b_1 \in C_i \text{ and } b_2 \in C_i} x_{C_i} \geq 2 + x_C > 2 \;,
+       \end{align*}
+       a contradiction. Therefore $|B\cap C| = 1$.
+
+       Since the cover of size 2 was arbitrary, each member $C$ with $x_C$ has exactly one element with each of these covers in common.
+       In the covering graph, such a member is a stable set and vertex cover.
+       Given whether an element $s \in V$ is contained in $C$ or not uniquly determines whether an element $t \in V$ has to be contained in $C$ since connectivity of the covering graph assures a $s-t$-path which has to be alternating.
+       In particular, the covering graph cannot contain an odd cycle, since that would result in two paths between the same vertices of different parity in length. Thus, the covering graph is bipartite and we get two colour classes.
+
+       Since paths between vertices of the same colour class have even length and paths between vertices of different colour classes have odd length, a member which contains one element of a colour class, exactly consists of the elements of this colour class.
+       It is impossible, that all members with $x_C > 0$ are only one of the two colour classes because that would be the only member in the fractional packing and a value of 2 would not be possible.
+       Therefore each colour class is represented by a member, so there are members $K$ and $L$ with $K \cap L = \emptyset$ and $K \cup L = V$.
+
+   \end{proof}
+
+   \begin{proposition}
+       Let $\mathcal{C}$ be a dense clutter over ground set $V$ such that every proper minor with covering number at least 2 has a fractional packing.
+       Then $\mathcal{C}$ has two members $C_1$ and $C_2$ such that $|C_1 \cap C_2|=1$ and $C_1 \cup C_2 = V$.
+   \end{proposition}
+
+   \begin{proof}
+
+   \end{proof}
+
+   We are now ready to prove the main proposition of this chapter.
+   \begin{proposition}
+       The set of dense clutters is 3-unifying.
+   \end{proposition}
+
+   \begin{proof}
+
+   \end{proof}
+
+   <++>
+
+
 \end{document}
