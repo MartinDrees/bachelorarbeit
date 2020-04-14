@@ -1,10 +1,14 @@
-\documentclass[a4paper, 12pt]{scrbook}
+\documentclass[a4paper, 12pt, twoside=false]{scrbook}
 
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumerate}
 
 \theoremstyle{definition}
+\newtheorem{definition}{Definition}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}
 \newtheorem{lemma}{Lemma}
@@ -16,6 +20,70 @@
    \maketitle
    \tableofcontents
    \chapter{Introduction}
+   \begin{definition}
+       Let $\mathcal{S}$ be a set of Clutters.
+       A Clutter $\mathcal{C} \in \mathcal{S}$ is called \emph{restriction-minimal} in $\mathcal{S}$ if no proper restriction of $\mathcal{C}$ is in $\mathcal{S}$.
+   \end{definition}
+
+   \begin{definition}
+       A set of Clutters is called \emph{$k$-unifying} if every restriction-minimal Clutter in this set has $k$ members whose union is the ground set.
+   \end{definition}
+
+   \begin{theorem}
+       Let $\mathcal{S}$ be a $k$-unifying set of clutters and $\mathcal{C}$ be a Clutter over ground set $V$.
+       Then the following two statements are equivalent:
+       \leavevmode
+       \begin{enumerate}[i)]
+           \item $\mathcal{C}$ has a restriction in $\mathcal{S}$.
+           \item There are $k$ members $C_1, C_2, \ldots, C_k$ of $\mathcal{C}$ such that the Clutter obtained by $\mathcal{C}$ after restricting $V - \bigcup_{i=1}^k C_i$ is in $\mathcal{S}$.
+       \end{enumerate}
+   \end{theorem}
+
+   \begin{proof}
+       ($\impliedby$) is immediate.
+       ($\implies$) Since Clutters have finite ground set, $\mathcal{C}$ has a restriction-minimal restriction.
+       Let this restriction be $\mathcal{C}\backslash I / J$.
+       Since $\mathcal{S}$ is $k$-unifying, we find $k$ members $C_1', C_2', \ldots, C_k'$ in this restriction, such that $\bigcup_{i=1}^k C_i' = V - (I \cup J)$.
+ Let $C_i = C_i' \cup J$.
+       That yields $I=V-\bigcup_{i=1}^k C_i$, therefore such $k$ members are found.
+   \end{proof}
+
    \chapter{Intersecting restrictions}
+   \begin{proposition}
+       Let $k\geq 2$ be an integer.
+       The set of $k$-wise intersecting clutters is $(k+1)$-unifying.
+   \end{proposition}
+
+   \begin{proof}
+       Let $\mathcal{C}$ be $k$-wise intersecting such that no proper restrictionis $k$-wise intersecting.
+       We have to show that $\mathcal{C}$ has $(k+1)$ members whose union is the ground set.
+       Choose $(k+1)$ members $C_1, C_2, \ldots, C_{k+1}$ of $\mathcal{C}$ such that $|\bigcap_{i=1}^{k+1} C_i|$ is minimal.
+       We prove that the union of these members is the ground set $V$.
+       Assume this is not the case.
+       Then there is a $v \in V$ such that $v \not\in C_i$ for $i=1,2, \ldots, k+1$.
+       Consider the restriction obtained by $\mathcal{C}$ after restricting $v$.
+       Let this restriction be $\mathcal{C'}=\mathcal{C} \backslash v / J$.
+       Note that by the definition of a restriction, we get $J \subseteq \bigcap_{i=1}^{k+1} C_i$.
+
+       If this restriction is not a proper restriction, $\mathcal{C'}$ is trivial.
+       That means $\mathcal{C'}=\{\}$ or $\mathcal{C'}=\{\emptyset\}$.
+       The first case is not possible because $\{v\}$ would be a cover of $\mathcal{C}$.
+       In the second case, there is a member $C^* \in \mathcal{C}$ with $C^* \subseteq J$.
+
+       If the restriction is a proper restriction, $\mathcal{C'}$ is not $k$-wise intersecting. We therefore find $k$ members $C_1',\ldots, C_k'$ of $\mathcal{C'}$ with empty intersection. We get $k$ members $C_1^*, C_2^*,\ldots, C_k^*$ in $\mathcal{C}$ with $\bigcap_{i=1}^k C_i^* \subseteq J$.
+       If the restriction was not proper, we take $k-1$ arbitrary further members to get the same result.
+
+       Note, that the intersection of these $k$ members is not empty since $\mathcal{C}$ is $k$-wise intersecting.
+       We find an element $u \in \bigcap_{i=1}^k C_i^*$. Since $\{u\}$ is not a cover, we find $C_{k+1}^*$ with $u \not\in C_{k+1}^*$.
+       We conclude
+       \begin{align*}
+           \bigcap_{i=1}^{k+1} C_i^* \subsetneq J \subseteq \bigcap_{i=1}^{k+1} C_i \;,
+       \end{align*}
+       a contratiction to the minimality assumption of these $(k+1)$ members.
+       Therefore, the union of these $(k+1)$ members is the ground set.
+
+
+   \end{proof}
+
    \chapter{Dense restrictions}
 \end{document}
