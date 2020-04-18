@@ -126,7 +126,42 @@
    \end{proposition}
 
    \begin{proof}
+       If an element $v \in V$ does not appear in a cover of size two of $\mathcal{C}$, the proper minor $\mathcal{C} \backslash v$ has covering number at least 2.
+       Thus, this minor has a fractional packing of value 2 which is also a fractional packing of value 2 for $\mathcal{C}$, a contradiction.
+       Therefore $\tau(\mathcal{C}) = 2$ and each element of the ground set appears in a cover of size 2.
+       Let $G$ be the covering graph of $\mathcal{C}$.
+       We will first proof, that $G$ is connected.
+       Assume this is not the case.
+       Let $A$ be the vertex set of a component of $G$ and $B = V - A$.
+       Let $H$ be the subgraph of $G$ induced by $A$.
+       Note that $A$ is a cover of $\mathcal{C}$ since it contains at least one cover.
 
+       Consider the minor $\mathcal{C'}=\mathcal{C}/B$.
+       If $\mathcal{C'}$ has a cover of size 1, this would also be a cover of $\mathcal{C}$, since no member is entirely contracted.
+       Hence, $\mathcal{C'}$ has a fractional packing of value 2.
+       Furthermore, every cover of $\mathcal{C}$ disjoint to $B$ is a cover of $\mathcal{C'}$.
+       Therefore the covering graph of $\mathcal{C'}$ contains the edges of $H$ and is therefore connected.
+       Applying the previous Lemma to $\mathcal{C'}$ yields, that the covering graph is bipartite, implying that $H$ is bipartite.
+       Let $K$ and $L$ be the two sets representing the colour classes of $H$.
+       We also get, that the two colour classes are members in $\mathcal{C'}$, implying that $K$ and $L$ are not covers in $\mathcal{C}$.
+
+       If both of the minors $\mathcal{C} \backslash K / L$ and $\mathcal{C} \backslash L / K$ have a fractional packing of value 2, we can add these two fractional packings in the canonical way and divide by 2.
+       We get a fractional packing of value 2 for $\mathcal{C}$ which is not possible.
+       Hence, one of these minors has a cover of size 1.
+       Let this cover be $\{b\}$.
+       The proper minor $\mathcal{C''}=\mathcal{C} \backslash b / (B-\{b\}$ has no cover of size 1 since there is no edge between the vertex sets $A$ and $B$.
+       Using the same argument as for $\mathcal{C'}$, the covering graph of $\mathcal{C''}$ contains the edges of $H$, is bipartite and has the colour classes as members.
+       Therefore $K$ and $L$ are members of $\mathcal{C''}$, but not covers.
+       That yields that neither $K \cup \{b\}$ nor $L \cup \{b\}$ are covers of $\mathcal{C}$, a contradiction.
+       Hence, $G$ is connected.
+
+       Consider a leaf $s \in V$ of an arbitrary spanning tree of $G$.
+       If the minor $\mathcal{C} / s$ has a cover of size 1, $V - s$ is connected but contains no edge.
+       That implies $|V| \leq 2$, but then $\mathcal{C}$ cannot be dense.
+       Otherwise $\mathcal{C} / s$ has a fractional packing of value 2 and connected covering graph.
+       Therefore, we find two disjoint members $K$ and $L$ representing the colour classes whose union is $V-s$.
+       In $\mathcal{C}$ both members have to contain $s$ to avoid a fractional packing of value 2.
+       So $C_1=K\cup \{b\}$ and $C_2=L\cup \{b\}$ fulfill the condition.
    \end{proof}
 
    We are now ready to prove the main proposition of this chapter.
@@ -135,10 +170,27 @@
    \end{proposition}
 
    \begin{proof}
+       Let $\mathcal{C}$ be a dense clutter over ground set $V$ such that every proper restriction of $\mathcal{C}$ is not dense.
+       Choose $U$ such that $\mathcal{C} / U$ is dense but no proper contraction minor is.
+       Let $\mathcal{C} \backslash I / (U \cup U')$ be a proper minor of $\mathcal{C} /U$ with covering number at least 2.
+       If $I \neq \emptyset$, the restriction $\mathcal{C} \backslash I / J$ is not dense and therefore has a fractional packing of value 2.
+       Since $J \subseteq (U \cup U')$, the minor $\mathcal{C} \backslash I / (U \cup U'$ also has a fractional packing of value 2.
+       If $I=\emptyset$ we get the same result by the definition of $U$.
 
+       Hence, $\mathcal{C}/U$ fulfills the condition of the preceeding proposition.
+       We find two members $C_1'$ and $C_2'$ with $|C_1' \cap C_2'| = 1$ and $C_1' \cup C_2' = V - U$.
+       Choose $C_3'$ which does not contain the element of the intersection.
+       This is possible since there is no cover of size 1.
+
+       Let $C_1, C_2, C_3 \in \mathcal{C}$ such that $C_i' \subseteq C_i \subseteq C_i' \cup U$ for $i=1,2,3$.
+       We will proof $C_1 \cup C_2 \cup C_3 = V$.
+       Suppose there is $v \in V-(C_1 \cup C_2 \cup C_3)$.
+       Clearly, $v \in U$.
+       The minor $\mathcal{C'} = \mathcal{C} \backslash v / (U-\{v\})$ contains a subset of the members of $\mathcal{C}/U$.
+       Therefore $\mathcal{C'}$ has no fractional packing.
+       Since $C_1', C_2', C_3' \in \mathcal{C'}$ and they have empty intersection, $\mathcal{C'}$ has no cover of size 1.
+       That implies $\mathcal{C'}$ is dense.
+       So the proper restriction $\mathcal{C}\backslash v / J$ is dense, a contradiction.
+       Therefore $\mathcal{C}$ has three members whose union is the ground set and the set of dense clutters is 3-unifying.
    \end{proof}
-
-   <++>
-
-
 \end{document}
