@@ -8,11 +8,19 @@
 \usepackage{enumerate}
 
 \theoremstyle{definition}
-\newtheorem{definition}{Definition}
-\newtheorem{theorem}{Theorem}[section]
+\newtheorem*{definition}{Definition}
+\newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{corollary}{Corollary}
-\newtheorem{lemma}{Lemma}
+\newtheorem{lemma}{Lemma}[chapter]
 \newtheorem{proposition}{Proposition}
+
+\newcommand*{\id}{\ensuremath{\mathrm{id}}}
+\newcommand*{\IC}{\ensuremath{\mathbb{C}}}
+\newcommand*{\IR}{\ensuremath{\mathbb{R}}}
+\newcommand*{\IQ}{\ensuremath{\mathbb{Q}}}
+\newcommand*{\IZ}{\ensuremath{\mathbb{Z}}}
+\newcommand*{\IN}{\ensuremath{\mathbb{N}}}
+\let\eps\varepsilon
 
 \title{Intersecting clutters}
 \author{Martin Drees}
@@ -20,6 +28,118 @@
    \maketitle
    \tableofcontents
    \chapter{Introduction}
+   \begin{definition}
+       A \emph{clutter} over ground set $V$ is a family of subsets of $V$ called members such that no member contain another.
+       The clutters $\{\}$ and $\{\emptyset\}$ are called \emph{trivial} clutters.
+   \end{definition}
+
+\section{Covers and packings}
+\begin{definition}
+    Let $\mathcal{C}$ be a clutter over ground set $V$.
+    A \emph{cover} of $\mathcal{C}$ is a set $B \subseteq V$ such that $B \cap C \neq \emptyset$ for all members $C \in \mathcal{C}$.
+    The \emph{covering number} $\tau(\mathcal{C})$ is the minimum cardinality of a cover.
+\end{definition}
+
+\begin{definition}
+    A \emph{packing} of a clutter is a set of pairwise disjoint members.
+    The \emph{packing number} $\nu(\mathcal{C})$ is the maximum cardinality of a packing.
+\end{definition}
+
+For a nontrivial clutter $\mathcal{C}$ we have $\tau(\mathcal{C}) \geq \nu(\mathcal{C})$ since each of the pairwise disjoint members in a packing contains one element of a cover.
+
+\section{Minors and restrictions}
+\begin{definition}
+    Let $\mathcal{C}$ be a clutter over ground set $V$ and $I, J \subseteq V$ disjoint subsets.
+    The \emph{minor} of $\mathcal{C}$ obtained after \emph{deleting} $I$ and \emph{contracting} $J$ is the clutter $\mathcal{C} \backslash I / J$ over ground set $V - (I \cup J)$ whose members are the inclusion-wise minimal sets of $\{C-J : C~\in~\mathcal{C},\, C~\cap~I = \emptyset\}$.
+    If $I \cup J \neq \emptyset$ the minor is called \emph{proper}.
+\end{definition}
+
+\begin{definition}
+    Let $\mathcal{C}$ be a clutter over ground set $V$ and $I \subseteq V$.
+    Let
+    \begin{align*}
+        J := \{u \in V-I : \{u\} \text{ is a cover of } C\backslash I\} \;.
+    \end{align*}
+    The minor $\mathcal{C} \backslash I / J$ is the \emph{restriction} of $\mathcal{C}$ after restricting $I$.
+\end{definition}
+
+By the definition of the set $J$, a restriction is either trivial or $\tau(\mathcal{C}) \geq 2$ since a cover of size 1 would have been contracted.
+\section{Intersecting clutters}
+\begin{definition}
+    A clutter is \emph{intersecting} if $\tau(\mathcal{C}) > \nu(\mathcal{C}) = 1$, i.e. every two members intersect, but not all members have a common element.
+\end{definition}
+
+\section{Dense clutters}
+\begin{definition}
+    Let $\mathcal{C}$ be a clutter over ground set $V$.
+    A \emph{fractional packing} is a vector $y \in \IR_{\geq0}^{\mathcal{C}}$ such that
+    \begin{align*}
+        \sum_{v \in C \in \mathcal{C}} y_C \leq 1 \quad \forall v \in V \,.
+    \end{align*}
+    The \emph{value} of the fractional packing is $\textbf{1}^Ty$.
+\end{definition}
+\begin{definition}
+    A clutter $\mathcal{C}$ is called \emph{dense}, if $\tau(\mathcal{C}) \geq 2$ and $\mathcal{C}$ has no fractional packing of value 2.
+\end{definition}
+
+Observe that a dense clutter is also intersecting since two disjoint members would yield a fractional packing of value 2.
+The converse is not necessaraly true.
+The clutter $Q_6$ of triangles in the $K_4$ has a fractional packing of value 2 by assigning $\frac 12$ to each of the four triangles, but is intersecting.
+
+The following result gives a certificate for a dense clutter.
+\begin{lemma}
+    Let $\mathcal{C}$ be a clutter with $\tau(\mathcal{C})\geq 2$ over ground set $V$.
+    Then the following are equivalent:
+    \leavevmode
+    \begin{enumerate}[(i)]
+        \item $\mathcal{C}$ is dense,
+        \item there is a $w \in \IR_{\geq 0}^V$ with $\textbf{1}^Tw=1$ such that $\sum_{u \in C} w_u > \frac 12$ for all C $\in \mathcal{C}$.
+    \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+    Consider the following dual pair of linear programs
+    \newline
+    \newline
+    \begin{minipage}{.5\linewidth}
+        \begin{equation*}
+            \begin{array}{l@{\quad} r l l}
+                (P)\\
+                \max          &z   \\
+                \mathrm{s.t.}  &\displaystyle\sum\limits_{u\in C} w_u &\geq  z \quad \forall C \in \mathcal{C} \\
+                    & \textbf{1}^Tw &=   1 \\
+                    &   w &\geq   \textbf{0}
+            \end{array}
+        \end{equation*}
+    \end{minipage}
+    \begin{minipage}{.5\linewidth}
+        \begin{equation*}
+            \begin{array}{l@{\quad} r l l}
+                (D)\\
+                \min          &t   \\
+                \mathrm{s.t.}  &\displaystyle\sum\limits_{v \in C \in \mathcal{C}} y_C &\leq  t \quad \forall v \in V \\
+                    & \textbf{1}^Ty &=   1 \\
+                    &   y &\geq   \textbf{0}
+            \end{array}
+        \end{equation*}
+    \end{minipage}
+    \newline
+    \newline
+    Observe that (i) holds if and only if the optimal value of (D) is greater than $\frac 12$ while (ii) holds if and only if the optimal value of (P) is greater than $\frac 12$.
+    From strong duality we get the equivalence.
+\end{proof}
+
+In contrast to $Q_6$ we get the following consequnece:
+\begin{corollary}
+    Deltas and blocker of extended odd holes are dense.
+\end{corollary}
+
+\begin{proof}
+    As seen before, deltas and blockers of extended odd holes do not have a cover of size 1.
+    For $\mathcal{C}=\Delta_n$ let $w=\left(\frac{n-2}{2n-3}, \frac 1{2n-3}, \ldots, \frac 1{2n-3}\right)$ and for blockers of extended odd holes let $w=\textbf{1}$.
+\end{proof}
+
+\section{The unifying theorem}
    \begin{definition}
        Let $\mathcal{S}$ be a set of clutters.
        A clutter $\mathcal{C} \in \mathcal{S}$ is called \emph{restriction-minimal} in $\mathcal{S}$ if no proper restriction of $\mathcal{C}$ is in $\mathcal{S}$.
@@ -47,6 +167,14 @@
  Let $C_i = C_i' \cup J$.
        That yields $I=V-\bigcup_{i=1}^k C_i$, therefore such $k$ members are found.
    \end{proof}
+   \begin{corollary}
+       Let $\mathcal{C}$ be a clutter and $\mathcal{S}$ be a set of clutters.
+       Furthermore there is an oracle given which decides for a given clutter whether it is in $\mathcal{S}$.
+       Then one can decide in polynomial time whether $\mathcal{C}$ has a restriction in $\mathcal{S}$.
+   \end{corollary}
+
+   In the second chapter, we will apply this to the set of intersecting clutters and in the third chapter to the set of dense clutters.
+   We therefore get polynomial time algorithms to decide whether a clutter has an intersecting/dense restriction.
 
    \chapter{Intersecting restrictions}
    \begin{proposition}
@@ -71,9 +199,9 @@
        In the second case, there is a member $C^* \in \mathcal{C}$ with $C^* \subseteq J$.
 
        If the restriction is a proper restriction, $\mathcal{C'}$ is not $k$-wise intersecting. We therefore find $k$ members $C_1',\ldots, C_k'$ of $\mathcal{C'}$ with empty intersection. We get $k$ members $C_1^*, C_2^*,\ldots, C_k^*$ in $\mathcal{C}$ with $\bigcap_{i=1}^k C_i^* \subseteq J$.
-       If the restriction was not proper, we take $k-1$ arbitrary further members to get the same result.
+       In the first case we take $k-1$ arbitrary further members to get the same result.
 
-       Note, that the intersection of these $k$ members is not empty since $\mathcal{C}$ is $k$-wise intersecting.
+       Note that the intersection of these $k$ members is not empty since $\mathcal{C}$ is $k$-wise intersecting.
        We find an element $u \in \bigcap_{i=1}^k C_i^*$. Since $\{u\}$ is not a cover, we find $C_{k+1}^*$ with $u \not\in C_{k+1}^*$.
        We conclude
        \begin{align*}
@@ -84,6 +212,26 @@
 
 
    \end{proof}
+
+   For intersecting clutters we get the following consequence.
+   \begin{corollary}
+       The set of intersecting clutters is 3-unifying.
+   \end{corollary}
+
+   \begin{lemma}
+       A clutter has an intersecting restriction if and only if it has an intersecting minor.
+   \end{lemma}
+
+  \begin{proof}
+      If a clutter has an intersecting restriction, this restriction is by definition a minor.
+
+      Let $\mathcal{C}$ be clutter and $\mathcal{C} \backslash I /J$ be an intersecting minor.
+      Let $\mathcal{C'}=\mathcal{C} \backslash I /J'$ be the minor obtained after restricting $I$.
+      By the definition of a restriction and $\tau(\mathcal{C} \backslash I /J) \geq 2$, we get $J' \subseteq J$.If $\mathcal{C'}$ was trivial, so would $\mathcal{C} \backslash I / J$.
+      If $\mathcal{C'}$ had two disjoint members, so would $\mathcal{C} \backslash I /J$ because it is not trivial.
+      Since both is not the case, $\mathcal{C'}$ is intersecting.
+  \end{proof}
+
 
    \chapter{Dense restrictions}
    In this chapter we will prove, that the set of dense clutters is 3-unifying.
