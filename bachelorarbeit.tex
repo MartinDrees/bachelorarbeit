@@ -6,13 +6,17 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{enumerate}
+\usepackage[colorlinks=true]{hyperref}
+
+\usepackage{biblatex}
+\addbibresource{sample.bib}
 
 \theoremstyle{definition}
 \newtheorem*{definition}{Definition}
 \newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{corollary}{Corollary}
-\newtheorem{lemma}{Lemma}[chapter]
-\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
 
 \newcommand*{\id}{\ensuremath{\mathrm{id}}}
 \newcommand*{\IC}{\ensuremath{\mathbb{C}}}
@@ -240,7 +244,7 @@ In contrast to $Q_6$ we get the following consequnece:
        The \emph{covering graph} of $\mathcal{C}$ with vertex set $V$ and the covers of size two of $\mathcal{C}$ as edges.
    \end{definition}
 
-   \begin{lemma}
+   \begin{lemma}\label{bipartite}
        Let $\mathcal{C}$ be a clutter over ground set $V$ with $\tau(\mathcal{C})=2$, connected covering graph and a fractional packing of value 2.
        Then the covering graph is bipartite and $\mathcal{C}$ has two members representing the colour classes, in particular there are member $L$ and $K$ of $\mathcal{C}$ with $K \cap L = \emptyset$ and $K \cup L = V$.
    \end{lemma}
@@ -268,7 +272,7 @@ In contrast to $Q_6$ we get the following consequnece:
 
    \end{proof}
 
-   \begin{proposition}
+   \begin{proposition}\label{twomember}
        Let $\mathcal{C}$ be a dense clutter over ground set $V$ such that every proper minor with covering number at least 2 has a fractional packing.
        Then $\mathcal{C}$ has two members $C_1$ and $C_2$ such that $|C_1 \cap C_2|=1$ and $C_1 \cup C_2 = V$.
    \end{proposition}
@@ -289,7 +293,7 @@ In contrast to $Q_6$ we get the following consequnece:
        Hence, $\mathcal{C'}$ has a fractional packing of value 2.
        Furthermore, every cover of $\mathcal{C}$ disjoint to $B$ is a cover of $\mathcal{C'}$.
        Therefore the covering graph of $\mathcal{C'}$ contains the edges of $H$ and is therefore connected.
-       Applying the previous Lemma to $\mathcal{C'}$ yields, that the covering graph is bipartite, implying that $H$ is bipartite.
+       Applying \hyperref[bipartite]{Lemma \ref*{bipartite}} to $\mathcal{C'}$ yields, that the covering graph is bipartite, implying that $H$ is bipartite.
        Let $K$ and $L$ be the two sets representing the colour classes of $H$.
        We also get, that the two colour classes are members in $\mathcal{C'}$, implying that $K$ and $L$ are not covers in $\mathcal{C}$.
 
@@ -325,7 +329,7 @@ In contrast to $Q_6$ we get the following consequnece:
        Since $J \subseteq (U \cup U')$, the minor $\mathcal{C} \backslash I / (U \cup U'$ also has a fractional packing of value 2.
        If $I=\emptyset$ we get the same result by the definition of $U$.
 
-       Hence, $\mathcal{C}/U$ fulfills the condition of the preceeding proposition.
+       Hence, $\mathcal{C}/U$ fulfills the condition of \hyperref[twomember]{Proposition \ref*{twomember}}.
        We find two members $C_1'$ and $C_2'$ with $|C_1' \cap C_2'| = 1$ and $C_1' \cup C_2' = V - U$.
        Choose $C_3'$ which does not contain the element of the intersection.
        This is possible since there is no cover of size 1.
@@ -341,4 +345,7 @@ In contrast to $Q_6$ we get the following consequnece:
        So the proper restriction $\mathcal{C}\backslash v / J$ is dense, a contradiction.
        Therefore $\mathcal{C}$ has three members whose union is the ground set and the set of dense clutters is 3-unifying.
    \end{proof}
+
+   \cite{einstein}
+   \printbibliography[title={References}]
 \end{document}
