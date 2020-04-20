@@ -167,7 +167,7 @@ Hence, blockers of extended odd holes are intersecting clutters.
 \end{definition}
 
 Observe that a dense clutter is also intersecting since two disjoint members would yield a fractional packing of value 2.
-The converse is not necessaraly true.
+The converse is not necessarily true.
 The clutter $Q_6$ of triangles in the $K_4$ has a fractional packing of value 2 by assigning $\frac 12$ to each of the four triangles, but is intersecting.
 
 The following result gives a certificate for a dense clutter.
@@ -213,7 +213,7 @@ The following result gives a certificate for a dense clutter.
     From strong duality we get the equivalence.
 \end{proof}
 
-In contrast to $Q_6$ we get the following consequnece:
+In contrast to $Q_6$ we get the following consequence:
 \begin{corollary}
     Deltas and blocker of extended odd holes are dense.
 \end{corollary}
@@ -224,8 +224,8 @@ In contrast to $Q_6$ we get the following consequnece:
 \end{proof}
 
 \chapter{The unifying theorem}
-This chapter provides a polynmial characterisation whether a clutter has a restriction with a certain property.
-This is a genaralisation of Theorem 1.3 and Theorem 1.9 of \cite{restrictions}.
+This chapter provides a polynomial characterisation whether a clutter has a restriction with a certain property.
+This is a generalisation of Theorem 1.3 and Theorem 1.9 of \cite{restrictions}.
 A common feature is the need of members whose union is the ground set in a clutter that is minimal in respect to the given property.
    \begin{definition}
        Let $\mathcal{S}$ be a set of clutters.
@@ -264,10 +264,10 @@ A common feature is the need of members whose union is the ground set in a clutt
    \end{corollary}
 
    \begin{proof}
-       For each set of not necessaraly different $k$ members of $\mathcal{C}$, consider the restriction of the complement of the union of these members.
-       If any of these restrictions restrictons is a nontrivial clutter in $\mathcal{S}$, there is a nontrivial restriction in $\mathcal{S}$ by \hyperref[unifying]{Theorem \ref*{unifying}}.
+       For each set of not necessarily different $k$ members of $\mathcal{C}$, consider the restriction of the complement of the union of these members.
+       If any of these restrictions restrictions is a nontrivial clutter in $\mathcal{S}$, there is a nontrivial restriction in $\mathcal{S}$ by \hyperref[unifying]{Theorem \ref*{unifying}}.
        Otherwise, there is no such restrictions.
-       Since there are $m^k$ possibilites to choose the members, the restrictions can be calculated in polynomial time dependent on $n$ and $m$. The oracle decides whether the restriction is actually in $\mathcal{S}$, so this entire process can be done in polynomial time.
+       Since there are $m^k$ possibilities to choose the members, the restrictions can be calculated in polynomial time dependent on $n$ and $m$. The oracle decides whether the restriction is actually in $\mathcal{S}$, so this entire process can be done in polynomial time.
    \end{proof}
 
    In the third chapter, we will apply this to the set of intersecting clutters and in the fourth chapter to the set of dense clutters.
@@ -275,9 +275,9 @@ A common feature is the need of members whose union is the ground set in a clutt
 
    \chapter{Intersecting restrictions}
    This chapter gives a simplified proof for Proposition 3.3 in \cite{restrictions}.
-   The statement is also slightgy generalized with the concept of $k$-wise intersection introduced in \cite{k-wise} because that does not change the proof.
+   The statement is also slightly generalized with the concept of $k$-wise intersection introduced in \cite{k-wise} because that does not change the proof.
    \begin{definition}
-       A nontrivial clutter is called \emph{$k$-wise intersecting} if it has no cover of size 1 and every $k$ members (not necessaraly different) have a common element.
+       A nontrivial clutter is called \emph{$k$-wise intersecting} if it has no cover of size 1 and every $k$ members (not necessarily different) have a common element.
    \end{definition}
 
    Note that the $2$-wise intersecting clutters are exactly the intersecting clutters.
@@ -306,7 +306,7 @@ A common feature is the need of members whose union is the ground set in a clutt
        \begin{align*}
            \bigcap_{i=1}^{k+1} C_i^* \subsetneq J \subseteq \bigcap_{i=1}^{k+1} C_i \;,
        \end{align*}
-       a contratiction to the minimality assumption.
+       a contradiction to the minimality assumption.
        Therefore, the union of these $(k+1)$ members is the ground set.
 
 
@@ -334,11 +334,11 @@ A common feature is the need of members whose union is the ground set in a clutt
 
    \chapter{Dense restrictions}
    In this chapter we will prove, that the set of dense clutters is 3-unifying.
-   This is Proposition 4.5 of \cite{restrictions}.
+   This is basically Proposition 4.5 of \cite{restrictions}.
    In contrast to the proof given there, we will not use delta or blocker of extended odd hole minors.
    The theory used for the proof is developed in \cite{deltas}.
    We will use similar ideas to the ones presented in the proof of Theorem 3 of \cite{deltas}, but the separation of dense clutters and delta or blocker of extended odd holes minors allows for some shortcuts.
-   Especially \hyperref[bipartite]{Lemma \ref*{bipartite}} provides more combinatorical insight to the connection of fractional packings and covers of size 2.
+   Especially \hyperref[bipartite]{Lemma \ref*{bipartite}} provides more combinatorial insight to the connection of fractional packings of value 2 and covers of size 2.
    \begin{definition}
        Let $\mathcal{C}$ be a clutter over ground set $V$ with $\tau(\mathcal{C})=2$.
        The \emph{covering graph}\index{covering graph} of $\mathcal{C}$ is the graph with vertex set $V$ and the covers of size two of $\mathcal{C}$ as edges.
@@ -363,7 +363,7 @@ A common feature is the need of members whose union is the ground set in a clutt
 
        Since the cover of size 2 was arbitrary, each member $C$ with $x_C$ has exactly one element with each of these covers in common.
        In the covering graph, such a member is a stable set and vertex cover.
-       Given whether an element $s \in V$ is contained in $C$ or not uniquly determines whether an element $t \in V$ has to be contained in $C$ since connectivity of the covering graph assures a $s-t$-path which has to be alternating.
+       Given whether an element $s \in V$ is contained in $C$ or not uniquely determines whether an element $t \in V$ has to be contained in $C$ since connectivity of the covering graph assures an $s$-$t$-path which has to be alternating.
        In particular, the covering graph cannot contain an odd cycle, since that would result in two paths between the same vertices of different parity in length. Thus, the covering graph is bipartite and we get two colour classes.
 
        Since paths between vertices of the same colour class have even length and paths between vertices of different colour classes have odd length, a member which contains one element of a colour class, exactly consists of the elements of this colour class.
@@ -382,7 +382,8 @@ A common feature is the need of members whose union is the ground set in a clutt
        Thus, this minor has a fractional packing of value 2 which is also a fractional packing of value 2 for $\mathcal{C}$, a contradiction.
        Therefore $\tau(\mathcal{C}) = 2$ and each element of the ground set appears in a cover of size 2.
        Let $G$ be the covering graph of $\mathcal{C}$.
-       We will first proof, that $G$ is connected.
+
+       We will first proof that $G$ is connected.
        Assume this is not the case.
        Let $A$ be the vertex set of a component of $G$ and $B = V - A$.
        Let $H$ be the subgraph of $G$ induced by $A$.
@@ -436,7 +437,7 @@ A common feature is the need of members whose union is the ground set in a clutt
 
        Let $C_1, C_2, C_3 \in \mathcal{C}$ such that $C_i' \subseteq C_i \subseteq C_i' \cup U$ for $i=1,2,3$.
        We will proof $C_1 \cup C_2 \cup C_3 = V$.
-       Suppose there is $v \in V-(C_1 \cup C_2 \cup C_3)$.
+       Suppose there is a $v \in V-(C_1 \cup C_2 \cup C_3)$.
        Clearly, $v \in U$.
        The minor $\mathcal{C'} = \mathcal{C} \backslash v / (U-\{v\})$ contains a subset of the members of $\mathcal{C}/U$.
        Therefore $\mathcal{C'}$ has no fractional packing.
@@ -446,7 +447,6 @@ A common feature is the need of members whose union is the ground set in a clutt
        Therefore $\mathcal{C}$ has three members whose union is the ground set and the set of dense clutters is 3-unifying.
    \end{proof}
 
-   \nocite{*}
    \printbibliography[title={References}]
    \printindex
 \end{document}
