@@ -2,11 +2,15 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{csquotes}
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{enumerate}
 \usepackage[colorlinks=true]{hyperref}
+\usepackage{makeidx}
+
+\makeindex
 
 \usepackage[backend=biber]{biblatex}
 \addbibresource{sample.bib}
@@ -32,51 +36,127 @@
    \maketitle
    \tableofcontents
    \chapter{Introduction}
+   This thesis is heavily based on \textquote{Intersecting restrictions in clutters} by Abdi, Cornuéjols and Lee \cite{restrictions}.
+   In this first chapter some basic concepts and tools around clutters are introduced mainly following the introduction of \cite{restrictions}.
+   \section{Clutters}
    \begin{definition}
-       A \emph{clutter} over ground set $V$ is a family of subsets of $V$ called members such that no member contain another.
+       A \emph{clutter}\index{clutter} over a finite ground set $V$ is a family of subsets of $V$ called members such that no member contain another.
        The clutters $\{\}$ and $\{\emptyset\}$ are called \emph{trivial} clutters.
+       Two clutters are \emph{isomorphic}\index{isomorphic} if one can be obtained from the other by relabeling the ground set.
    \end{definition}
+   The following lemma is a useful tool to check whether to clutters are identical.
+   \begin{lemma}\label{equalclutters}
+       Let $\mathcal{C}_1$ and $\mathcal{C}_2$ be two clutters over the same ground set $V$ such that every member of $\mathcal{C}_1$ contains a member of $\mathcal{C}_2$ and vice versa.
+       Then $\mathcal{C}_1=\mathcal{C}_2$.
+   \end{lemma}
+
+   \begin{proof}
+       Let $C_1 \in \mathcal{C}_1$ be an arbitrary member.
+       We find a member $C_2 \in \mathcal{C}_2$ with $C_1 \supseteq C_2$.
+       Using $C_2$ we find a member $C_1' \in \mathcal{C}_1'$ such that $C_1 \supseteq C_2 \supseteq C_1'$.
+       Since $\mathcal{C}_1$ is a clutter we get $C_1=C_1'$ implying $C_1=C_2$.
+       We get $\mathcal{C}_1 \subseteq \mathcal{C}_2$.
+       Similarly, $\mathcal{C}_2 \subseteq \mathcal{C}_1$, implying $\mathcal{C}_1=\mathcal{C}_2$.
+   \end{proof}
 
 \section{Covers and packings}
 \begin{definition}
     Let $\mathcal{C}$ be a clutter over ground set $V$.
-    A \emph{cover} of $\mathcal{C}$ is a set $B \subseteq V$ such that $B \cap C \neq \emptyset$ for all members $C \in \mathcal{C}$.
-    The \emph{covering number} $\tau(\mathcal{C})$ is the minimum cardinality of a cover.
+    A \emph{cover}\index{cover} of $\mathcal{C}$ is a set $B \subseteq V$ such that $B \cap C \neq \emptyset$ for all members $C \in \mathcal{C}$.
+    A clutter is called \emph{minimal} if it does not contain another cover.
+    The \emph{covering number}\index{covering number} $\tau(\mathcal{C})$ is the minimum cardinality of a cover.
 \end{definition}
 
 \begin{definition}
-    A \emph{packing} of a clutter is a set of pairwise disjoint members.
-    The \emph{packing number} $\nu(\mathcal{C})$ is the maximum cardinality of a packing.
+    A \emph{packing}\index{packing} of a clutter is a set of pairwise disjoint members.
+    The \emph{packing number}\index{packing number} $\nu(\mathcal{C})$ is the maximum cardinality of a packing.
 \end{definition}
 
 For a nontrivial clutter $\mathcal{C}$ we have $\tau(\mathcal{C}) \geq \nu(\mathcal{C})$ since each of the pairwise disjoint members in a packing contains one element of a cover.
 
+\section{Blockers}
+\begin{definition}
+    Let $\mathcal{C}$ be a clutter over ground set $V$.
+    The \emph{blocker}\index{blocker} $b(\mathcal{C})$ is the clutter over ground set $V$ with the minimal covers of $\mathcal{C}$ as members.
+\end{definition}
+
+\begin{lemma}[Isbell 1958]
+    A clutter $\mathcal{C}$ satisfies $b(b(\mathcal{C}))=\mathcal{C}$.
+\end{lemma}
+
+\begin{proof}
+    Let $V$ be the ground set of the clutter.
+    Let $C \in \mathcal{C}$.
+    By the definition of the blocker, for each $B \in b(\mathcal{C})$ we have $B\cap C = \emptyset$.
+    Therefore $C$ is a cover of $b(\mathcal{C})$ and thus contains a minimal cover.
+    So every member of $\mathcal{C}$ contains a member of $b(b(\mathcal{C}))$.
+
+    Now let $C$ be a minimal cover of $b(\mathcal{C})$.
+    So $V-C$ does not contain a member of $b(\mathcal{C}$, implying that $V-C$ is not a cover of $\mathcal{C}$.
+    Therefore $C$ contains a member of $\mathcal{C}$.
+    Hence every member of $b(b(\mathcal{C}))$ contains a member of $\mathcal{C}$.
+
+    \hyperref[equalclutters]{Lemma \ref*{equalclutters}} implies $\mathcal{C}=b(b(\mathcal{C}))$.
+\end{proof}
+
+
 \section{Minors and restrictions}
 \begin{definition}
     Let $\mathcal{C}$ be a clutter over ground set $V$ and $I, J \subseteq V$ disjoint subsets.
-    The \emph{minor} of $\mathcal{C}$ obtained after \emph{deleting} $I$ and \emph{contracting} $J$ is the clutter $\mathcal{C} \backslash I / J$ over ground set $V - (I \cup J)$ whose members are the inclusion-wise minimal sets of $\{C-J : C~\in~\mathcal{C},\, C~\cap~I = \emptyset\}$.
+    The \emph{minor}\index{minor} of $\mathcal{C}$ obtained after \emph{deleting} $I$ and \emph{contracting} $J$ is the clutter $\mathcal{C} \backslash I / J$ over ground set $V - (I \cup J)$ whose members are the inclusion-wise minimal sets of $\{C-J : C~\in~\mathcal{C},\, C~\cap~I = \emptyset\}$.
     If $I \cup J \neq \emptyset$ the minor is called \emph{proper}.
 \end{definition}
 
 \begin{definition}
-    Let $\mathcal{C}$ be a clutter over ground set $V$ and $I \subseteq V$.
+    Let $\mathcal{C}$ be a clutter over ground set $V$ and $I \subseteq V$ such that $I$ is not a cover of $\mathcal{C}$.
     Let
     \begin{align*}
         J := \{u \in V-I : \{u\} \text{ is a cover of } C\backslash I\} \;.
     \end{align*}
-    The minor $\mathcal{C} \backslash I / J$ is the \emph{restriction} of $\mathcal{C}$ after restricting $I$.
+    The minor $\mathcal{C} \backslash I / J$ is the \emph{restriction}\index{restriction} of $\mathcal{C}$ after restricting $I$.
 \end{definition}
 
 By the definition of the set $J$, a restriction is either trivial or $\tau(\mathcal{C}) \geq 2$ since a cover of size 1 would have been contracted.
+
+Since $I$ is not a cover, for every member $C \in \mathcal{C} \backslash I /J$ the set $C \cup J$ is a member of $\mathcal{C}$.
+
 \section{Intersecting clutters}
 \begin{definition}
     A clutter is \emph{intersecting} if $\tau(\mathcal{C}) > \nu(\mathcal{C}) = 1$, i.e. every two members intersect, but not all members have a common element.
+    The trivial clutters are not intersecting.
 \end{definition}
+We will now see a few examples of intersecting clutters that will also play a major role throughout this entire work.
+
+Take the clutter over ground set $\{1,2,\ldots,6\}$ with members $\{1,3,5\}, \{1,4,6\}, \{2,3,6\}$ and $\{2,4,5\}$.
+Note that this clutter can be represented as the triangles of $K_4$, the complete graph on four vertices whose edges are the ground set of this clutter.
+This clutter is denoted by $Q_6$\index{$Q_6$} \cite{q6}.
+There is no cover of size one since after deleting an arbitrary edge of $K_4$ a triangle is still remaining.
+Furthermore there are no disjoint members since two disjoint triangles would use up all the edges and the parity at the vertices must be even, which is not the case.
+Thus $\tau(Q_6) > \nu(Q_6) = 1$, so $Q_6$ is an intersecting clutter.
+
+Let $n \geq 3$ be an integer.
+Take a clutter over ground set $\{1,2,\ldots,n\}$ with members $\{1,2\},\{1,3\},\ldots,\{1,n\}$ and $\{2,3,\ldots,n\}$.
+This clutter is called $\Delta_n$ and a clutter isomorphic to this clutter is called a \emph{delta of dimension $n$}\index{delta}\cite{deltadefinition}.
+Observe that $b(\Delta_n)=\Delta_n$.
+A delta clearly does not have disjoint members and $n\geq 3$ implies, that there is no cover of size 1.
+Hence, deltas are intersecting clutters.
+
+Let $n\geq 5$ be an odd integer.
+Consider the clutter $\mathcal{C}$ over ground set $\{1,2,\ldots,n\}$ such that the minimum cardinality members of $\mathcal{C}$ are $\{1,2\},\{2,3\},\ldots,\{n-1,n\}$ and $\{n,1\}$.
+That means that $\tau(\mathcal{C})=2$ and there are no further covers of size 2.
+A clutter that is isomorphic to $\mathcal{C}$ is an \emph{extended odd hole of dimension $n$}\index{extended odd hole}\cite{deltas}.
+Obviously, an extended odd hole is not intersecting since there are disjoint members.
+But the clutter of an extended odd hole actually is intersecting.
+Every minimal cover of $\mathcal{C}$ has at least $\frac{n+1}2$ elements since $n$ is odd.
+Therefore two minimal covers cannot be disjoint, so the blocker of an extended odd hole does not have disjoint members.
+Moreover, the blocker of the blocker of an extended odd hole in an extended odd hole and has no member of size 1.
+Therefore the blocker of an extended odd hole does not have cover of size 1.
+Hence, blockers of extended odd holes are intersecting clutters.
 
 \section{Dense clutters}
 \begin{definition}
     Let $\mathcal{C}$ be a clutter over ground set $V$.
-    A \emph{fractional packing} is a vector $y \in \IR_{\geq0}^{\mathcal{C}}$ such that
+    A \emph{fractional packing}\index{fractional packing} is a vector $y \in \IR_{\geq0}^{\mathcal{C}}$ such that
     \begin{align*}
         \sum_{v \in C \in \mathcal{C}} y_C \leq 1 \quad \forall v \in V \,.
     \end{align*}
@@ -143,23 +223,28 @@ In contrast to $Q_6$ we get the following consequnece:
     For $\mathcal{C}=\Delta_n$ let $w=\left(\frac{n-2}{2n-3}, \frac 1{2n-3}, \ldots, \frac 1{2n-3}\right)$ and for blockers of extended odd holes let $w=\textbf{1}$.
 \end{proof}
 
-\section{The unifying theorem}
+\chapter{The unifying theorem}
+This chapter provides a polynmial characterisation whether a clutter has a restriction with a certain property.
+This is a genaralisation of Theorem 1.3 and Theorem 1.9 of \cite{restrictions}.
+A common feature is the need of members whose union is the ground set in a clutter that is minimal in respect to the given property.
    \begin{definition}
        Let $\mathcal{S}$ be a set of clutters.
-       A clutter $\mathcal{C} \in \mathcal{S}$ is called \emph{restriction-minimal} in $\mathcal{S}$ if no proper restriction of $\mathcal{C}$ is in $\mathcal{S}$.
+       A clutter $\mathcal{C} \in \mathcal{S}$ is called \emph{restriction-minimal}\index{restriction-minimal} in $\mathcal{S}$ if no proper restriction of $\mathcal{C}$ is in $\mathcal{S}$.
    \end{definition}
 
    \begin{definition}
-       A set of clutters is called \emph{$k$-unifying} if every restriction-minimal Clutter in this set has $k$ members whose union is the ground set.
+       A set of clutters is called \emph{$k$-unifying}\index{$k$-unifying} if every restriction-minimal clutter in this set has $k$ members whose union is the ground set.
    \end{definition}
 
-   \begin{theorem}
+   We can now formulate the main theorem.
+
+   \begin{theorem}[unifying theorem]\label{unifying}
        Let $\mathcal{S}$ be a $k$-unifying set of clutters and $\mathcal{C}$ be a clutter over ground set $V$.
        Then the following two statements are equivalent:
        \leavevmode
-       \begin{enumerate}[i)]
-           \item $\mathcal{C}$ has a restriction in $\mathcal{S}$.
-           \item There are $k$ members $C_1, C_2, \ldots, C_k$ of $\mathcal{C}$ such that the clutter obtained by $\mathcal{C}$ after restricting $V - \bigcup_{i=1}^k C_i$ is in $\mathcal{S}$.
+       \begin{enumerate}[(i)]
+           \item $\mathcal{C}$ has a restriction in $\mathcal{S}$,
+           \item there are $k$ members $C_1, C_2, \ldots, C_k$ of $\mathcal{C}$ such that the clutter obtained by $\mathcal{C}$ after restricting $V - \bigcup_{i=1}^k C_i$ is a nontrivial clutter in $\mathcal{S}$.
        \end{enumerate}
    \end{theorem}
 
@@ -167,43 +252,53 @@ In contrast to $Q_6$ we get the following consequnece:
        ($\impliedby$) is immediate.
        ($\implies$) Since clutters have finite ground set, $\mathcal{C}$ has a restriction-minimal restriction.
        Let this restriction be $\mathcal{C}\backslash I / J$.
-       Since $\mathcal{S}$ is $k$-unifying, we find $k$ members $C_1', C_2', \ldots, C_k'$ in this restriction, such that $\bigcup_{i=1}^k C_i' = V - (I \cup J)$.
- Let $C_i = C_i' \cup J$.
+       Since $\mathcal{S}$ is $k$-unifying we find $k$ members $C_1', C_2', \ldots, C_k'$ in this restriction, such that $\bigcup_{i=1}^k C_i' = V - (I \cup J)$.
+       Let $C_i = C_i' \cup J$, which are members of $\mathcal{C}$.
        That yields $I=V-\bigcup_{i=1}^k C_i$, therefore such $k$ members are found.
    \end{proof}
    \begin{corollary}
-       Let $\mathcal{C}$ be a clutter and $\mathcal{S}$ be a set of clutters.
-       Furthermore there is an oracle given which decides for a given clutter whether it is in $\mathcal{S}$.
-       Then one can decide in polynomial time whether $\mathcal{C}$ has a restriction in $\mathcal{S}$.
+       Let $\mathcal{C}$ be a clutter over ground set $V$ with $n$ elements and $m$ members.
+       Let $\mathcal{S}$ be a $k$-unifying set of clutters for a fixed $k\geq 2$.
+       Furthermore there is an oracle given which decides for a given clutter whether it is in $\mathcal{S}$ in polynomial time.
+       Then one can decide in polynomial time dependent on $n$ and $m$ whether $\mathcal{C}$ has a nontrivial restriction in $\mathcal{S}$.
    \end{corollary}
 
-   In the second chapter, we will apply this to the set of intersecting clutters and in the third chapter to the set of dense clutters.
+   \begin{proof}
+       For each set of not necessaraly different $k$ members of $\mathcal{C}$, consider the restriction of the complement of the union of these members.
+       If any of these restrictions restrictons is a nontrivial clutter in $\mathcal{S}$, there is a nontrivial restriction in $\mathcal{S}$ by \hyperref[unifying]{Theorem \ref*{unifying}}.
+       Otherwise, there is no such restrictions.
+       Since there are $m^k$ possibilites to choose the members, the restrictions can be calculated in polynomial time dependent on $n$ and $m$. The oracle decides whether the restriction is actually in $\mathcal{S}$, so this entire process can be done in polynomial time.
+   \end{proof}
+
+   In the third chapter, we will apply this to the set of intersecting clutters and in the fourth chapter to the set of dense clutters.
    We therefore get polynomial time algorithms to decide whether a clutter has an intersecting/dense restriction.
 
    \chapter{Intersecting restrictions}
+   This chapter gives a simplified proof for Proposition 3.3 in \cite{restrictions}.
+   The statement is also slightgy generalized with the concept of $k$-wise intersection introduced in \cite{k-wise} because that does not change the proof.
+   \begin{definition}
+       A nontrivial clutter is called \emph{$k$-wise intersecting} if it has no cover of size 1 and every $k$ members (not necessaraly different) have a common element.
+   \end{definition}
+
+   Note that the $2$-wise intersecting clutters are exactly the intersecting clutters.
    \begin{proposition}
        Let $k\geq 2$ be an integer.
        The set of $k$-wise intersecting clutters is $(k+1)$-unifying.
    \end{proposition}
 
    \begin{proof}
-       Let $\mathcal{C}$ be $k$-wise intersecting such that no proper restrictionis $k$-wise intersecting.
+       Let $\mathcal{C}$ be $k$-wise intersecting such that no proper restriction is $k$-wise intersecting.
        We have to show that $\mathcal{C}$ has $(k+1)$ members whose union is the ground set.
        Choose $(k+1)$ members $C_1, C_2, \ldots, C_{k+1}$ of $\mathcal{C}$ such that $|\bigcap_{i=1}^{k+1} C_i|$ is minimal.
        We prove that the union of these members is the ground set $V$.
        Assume this is not the case.
        Then there is a $v \in V$ such that $v \not\in C_i$ for $i=1,2, \ldots, k+1$.
-       Consider the restriction obtained by $\mathcal{C}$ after restricting $v$.
+       Consider the restriction obtained by $\mathcal{C}$ after restricting $v$ (not a cover).
        Let this restriction be $\mathcal{C'}=\mathcal{C} \backslash v / J$.
-       Note that by the definition of a restriction, we get $J \subseteq \bigcap_{i=1}^{k+1} C_i$.
+       We get $J \subseteq \bigcap_{i=1}^{k+1} C_i$.
 
-       If this restriction is not a proper restriction, $\mathcal{C'}$ is trivial.
-       That means $\mathcal{C'}=\{\}$ or $\mathcal{C'}=\{\emptyset\}$.
-       The first case is not possible because $\{v\}$ would be a cover of $\mathcal{C}$.
-       In the second case, there is a member $C^* \in \mathcal{C}$ with $C^* \subseteq J$.
-
-       If the restriction is a proper restriction, $\mathcal{C'}$ is not $k$-wise intersecting. We therefore find $k$ members $C_1',\ldots, C_k'$ of $\mathcal{C'}$ with empty intersection. We get $k$ members $C_1^*, C_2^*,\ldots, C_k^*$ in $\mathcal{C}$ with $\bigcap_{i=1}^k C_i^* \subseteq J$.
-       In the first case we take $k-1$ arbitrary further members to get the same result.
+       Since $\mathcal{C'}$ is not $k$-wise intersecting and nonempty, we find $k$ members $C_1',\ldots, C_k'$ of $\mathcal{C'}$ with empty intersection.
+       We get $k$ members $C_1^*, C_2^*,\ldots, C_k^*$ in $\mathcal{C}$ with $\bigcap_{i=1}^k C_i^* \subseteq J$.
 
        Note that the intersection of these $k$ members is not empty since $\mathcal{C}$ is $k$-wise intersecting.
        We find an element $u \in \bigcap_{i=1}^k C_i^*$. Since $\{u\}$ is not a cover, we find $C_{k+1}^*$ with $u \not\in C_{k+1}^*$.
@@ -211,7 +306,7 @@ In contrast to $Q_6$ we get the following consequnece:
        \begin{align*}
            \bigcap_{i=1}^{k+1} C_i^* \subsetneq J \subseteq \bigcap_{i=1}^{k+1} C_i \;,
        \end{align*}
-       a contratiction to the minimality assumption of these $(k+1)$ members.
+       a contratiction to the minimality assumption.
        Therefore, the union of these $(k+1)$ members is the ground set.
 
 
@@ -222,7 +317,7 @@ In contrast to $Q_6$ we get the following consequnece:
        The set of intersecting clutters is 3-unifying.
    \end{corollary}
 
-   \begin{lemma}
+   \begin{lemma}[\cite{restrictions}, Remark 1.2]
        A clutter has an intersecting restriction if and only if it has an intersecting minor.
    \end{lemma}
 
@@ -239,9 +334,14 @@ In contrast to $Q_6$ we get the following consequnece:
 
    \chapter{Dense restrictions}
    In this chapter we will prove, that the set of dense clutters is 3-unifying.
+   This is Proposition 4.5 of \cite{restrictions}.
+   In contrast to the proof given there, we will not use delta or blocker of extended odd hole minors.
+   The theory used for the proof is developed in \cite{deltas}.
+   We will use similar ideas to the ones presented in the proof of Theorem 3 of \cite{deltas}, but the separation of dense clutters and delta or blocker of extended odd holes minors allows for some shortcuts.
+   Especially \hyperref[bipartite]{Lemma \ref*{bipartite}} provides more combinatorical insight to the connection of fractional packings and covers of size 2.
    \begin{definition}
        Let $\mathcal{C}$ be a clutter over ground set $V$ with $\tau(\mathcal{C})=2$.
-       The \emph{covering graph} of $\mathcal{C}$ with vertex set $V$ and the covers of size two of $\mathcal{C}$ as edges.
+       The \emph{covering graph}\index{covering graph} of $\mathcal{C}$ is the graph with vertex set $V$ and the covers of size two of $\mathcal{C}$ as edges.
    \end{definition}
 
    \begin{lemma}\label{bipartite}
@@ -348,4 +448,5 @@ In contrast to $Q_6$ we get the following consequnece:
 
    \nocite{*}
    \printbibliography[title={References}]
+   \printindex
 \end{document}
