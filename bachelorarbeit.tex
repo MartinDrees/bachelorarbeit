@@ -9,15 +9,18 @@
 \usepackage{amssymb}
 \usepackage{enumerate}
 \usepackage{tikz}
-\usepackage[colorlinks=true]{hyperref}
 \usepackage{makeidx}
 \usepackage{float}
 \usepackage[linesnumbered, ruled, vlined]{algorithm2e}
 \usepackage{microtype}
+\usepackage{scrhack}
+\usepackage[pdfpagelabels, plainpages=false]{hyperref}
 
 \makeindex
 
-\usepackage[backend=biber]{biblatex}
+\usetikzlibrary{calc}
+
+\usepackage[backend=biber, style=alphabetic]{biblatex}
 \addbibresource{sample.bib}
 
 \theoremstyle{definition}
@@ -42,7 +45,7 @@
 \author{Martin Drees}
 \geburtsdatum{13. November 1999}
 \geburtsort{Regensburg}
-\date{5. Juli 2020}
+\date{24. August 2020}
 
 \betreuer{Prof. Dr. Stephan Held}
 \zweitgutachter{Prof. Dr. Jens Vygen}
@@ -51,41 +54,64 @@
 \ausarbeitungstyp{Bachelorarbeit Mathematik}
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \maketitle
+\hypersetup{pageanchor=true}
 \addchap*{Abstract}
 A clutter is a family of sets, called members, such that no member contains another.
 In intersecting clutters every two members intersect, but not all members have a common element. Dense clutters additionally do not have a fractional packing of value 2.
 
 In the first part of this thesis, basic definitions and tools around clutters are introduced.
 Then a polynomial characterization of clutters with an intersecting respectively dense minor is given.
+We will consider two special classes of dense clutters, namely deltas and blockers of extended odd holes.
+A clutter has a dense minor if and only if it has a delta or the blocker of an extended odd hole minor.
+Therefore, we get a polynomial characterization whether a clutter has a delta or the blocker of an extended odd hole minor.
 In the end, a polynomial time algorithm for finding a delta or the blocker of an extended odd hole minor is provided.
 
-These results were already shown in \textquote{Intersecting restrictions in clutters} by Abdi, Cornuéjols and Lee and \textquote{Deltas, extended odd holes and their blockers} by Abdi and Lee.
+These results were already shown in \textquote{Intersecting restrictions in clutters} by Abdi, Cornuéjols and Lee \cite{restrictions} and \textquote{Deltas, extended odd holes and their blockers} by Abdi and Lee \cite{deltas}.
+
 However, the proofs for these theorems are simplified in this thesis and offer further insight into the structure of intersecting and dense clutters.
+In particular, we will study the structure of minimally dense clutters.
+We will prove that such a clutter is a delta or the blocker of an extended odd hole.
+Every proper minor of a minimally dense clutter with no cover of size 1 has a fractional packing of value 2.
+We will exploit that every member in the fractional packing intersects a cover of size 2 in exactly one element.
+
 Furthermore, the running time of the algorithm for finding a delta or the blocker of an extended odd hole is improved from $\mathcal{O}(n^4)$ to $\mathcal{O}(n^3)$ oracle calls.
-{\let\cleardoublepage\relax \addchap*{Zusammenfassung}}
+
+\addchap*{Zusammenfassung}
 Ein Clutter ist eine Familie von Mengen, genannt Mitglieder, sodass kein Mitglied ein anderes enthält. In einem intersecting Clutter schneiden sich je zwei Mitglieder, aber nicht alle Mitglieder haben ein gemeinsames Element.
 Ein dense Clutter hat zusätzlich keine fraktionale Packung mit Wert 2.
 
-Im ersten Teil dieser Arbeit werden grundlegende Definitionen und Aussagen zu Clutters eingeführt. Danach werden Clutter mit einem intersecting beziehungsweise dense Minor polynomiell charakterisiert. Zum Schluss wird ein Algorithmus zum Bestimmen eines Delta oder Blocker eines extended odd hole Minoren vorgestellt.
+Im ersten Teil dieser Arbeit werden grundlegende Definitionen und Aussagen zu Clutters eingeführt. Danach werden Clutter mit einem intersecting beziehungsweise dense Minor polynomiell charakterisiert. Wir werden zwei besondere Klassen von dense Cluttern betrachten, nämlich deltas und Blocker von extended odd holes.
+Ein Clutter hat genau dann einen dense Minor, wenn es einen Delta oder Blocker eines extended hole Minoren hat.
+Somit erhalten wir eine polynomielle Charakterisierung, ob ein Clutter einen Delta oder Blocker eines extended hole Minoren hat.
+Zum Schluss stellen wir einen Algorithmus zur Bestimmung eines Delta oder Blocker eines extended odd hole Minoren vor.
 
-Diese Resultate wurden bereits in \textquote{Intersecting restrictions in clutters} von Abdi, Cornuéjols und Lee und \textquote{Deltas, extended odd holes and their blockers} von Abdi und Lee gezeigt. Allerdings sind die Beweise in dieser Arbeit vereinfacht und geben einen tieferen Einblick in die Struktur von intersecting und dense Clutter. Zudem wurde die Laufzeit des Algorithmus zur Bestimmung eines Delta oder Blocker eines extended odd hole Minoren von $\mathcal{O}(n^4)$ auf $\mathcal{O}(n^3)$ Orakelaufrufe verbessert.
+Diese Resultate wurden bereits in \textquote{Intersecting restrictions in clutters} von Abdi, Cornuéjols und Lee \cite{restrictions} und \textquote{Deltas, extended odd holes and their blockers} von Abdi und Lee \cite{deltas} gezeigt.
+
+Allerdings sind die Beweise in dieser Arbeit vereinfacht und geben einen tieferen Einblick in die Struktur von intersecting und dense Clutter.
+Insbesondere analysieren wir die Struktur von minimal dense Clutters and beweisen, dass so ein Clutter ein Delta oder Blocker eines extended odd holes ist.
+Jeder echte Minor eines minimal dense Clutters ohne Überdeckung mit Kardinalität 1 hat eine fraktionale Packung mit Wert 2.
+Wir werden dann ausnutzen, dass jedes Mitglied aus der fraktionalen Packung eine Überdeckung von Kardinalität 2 in genau einem Element schneidet.
+
+Zudem wurde die Laufzeit des Algorithmus zur Bestimmung eines Delta oder Blocker eines extended odd hole Minoren von $\mathcal{O}(n^4)$ auf $\mathcal{O}(n^3)$ Orakelaufrufe verbessert.
 
    \tableofcontents
    \chapter{Introduction}
-   In this first chapter, some basic concepts and tools around clutters are introduced mainly following the introduction of \textquote{Intersecting restrictions in clutters}\cite{restrictions}.
+   In this first chapter, some basic concepts and tools around clutters are introduced, mainly following the introduction of \textquote{Intersecting restrictions in clutters} by Abdi, Cornuéjols and Lee \cite{restrictions}.
 
    We will also briefly discuss idealness of clutters providing some motivation why the structure of intersecting and dense clutters is of interest. That short introduction to idealness and some further tools in this chapter are based on the lecture notes of the course \textquote{CO750 Packing and Covering} by Ahmad Abdi\cite{course}.
+
    \section{Clutters}
-   \begin{definition}
-       A \emph{clutter}\index{clutter} over a finite ground set $V$ is a family of subsets of $V$ called members such that no member contains another\cite{blocker}.
+   \begin{definition}[Edmonds and Fulkerson \cite{blocker}]
+       A \emph{clutter}\index{clutter} over a finite ground set $V$ is a family of subsets of $V$ called members such that no member contains another.
        The clutters $\{\}$ and $\{\emptyset\}$ are called \emph{trivial} clutters.
        Two clutters are \emph{isomorphic}\index{isomorphic} if one can be obtained from the other by relabeling the ground set.
    \end{definition}
    A clutter can be represented as a hypergraph with the ground set as vertex set and the members as edges.
 
    The following lemma is a useful tool to check whether two clutters are identical.
-   \begin{lemma}\label{equalclutters}
+   \begin{lemma}[Seymour \cite{binary}, Proof of Lemma 1]\label{equalclutters}
        Let $\mathcal{C}_1$ and $\mathcal{C}_2$ be two clutters over the same ground set $V$ such that every member of $\mathcal{C}_1$ contains a member of $\mathcal{C}_2$ and vice versa.
        Then $\mathcal{C}_1=\mathcal{C}_2$.
    \end{lemma}
@@ -94,21 +120,19 @@ Diese Resultate wurden bereits in \textquote{Intersecting restrictions in clutte
        Let $C_1 \in \mathcal{C}_1$ be an arbitrary member.
        There is a member $C_2 \in \mathcal{C}_2$ with $C_1 \supseteq C_2$.
        Using $C_2$, we find a member $C_1' \in \mathcal{C}_1'$ such that $C_1 \supseteq C_2 \supseteq C_1'$.
-       Since $\mathcal{C}_1$ is a clutter, we get $C_1=C_1'$ implying $C_1=C_2$.
+       Since $\mathcal{C}_1$ is a clutter, we get $C_1=C_1'$, implying $C_1=C_2$.
        Thus $\mathcal{C}_1 \subseteq \mathcal{C}_2$.
        Similarly, $\mathcal{C}_2 \subseteq \mathcal{C}_1$, implying $\mathcal{C}_1=\mathcal{C}_2$.
    \end{proof}
 
 \section{Covers and packings}
 As in graphs and hypergraphs, the concept of covers and packings is also important in clutters.
-\begin{definition}
+\begin{definition}[Schrijver \cite{combopt}, Volume C, Chapter 77.5]
     Let $\mathcal{C}$ be a clutter over ground set $V$.
     A \emph{cover}\index{cover} of $\mathcal{C}$ is a set $B \subseteq V$ such that $B \cap C \neq \emptyset$ for all members $C \in \mathcal{C}$.
     A cover is called \emph{minimal} if it does not contain another cover.
     The \emph{covering number}\index{covering number} $\tau(\mathcal{C})$ is the minimum cardinality of a cover.
-\end{definition}
 
-\begin{definition}
     A \emph{packing}\index{packing} of a clutter is a set of pairwise disjoint members.
     The \emph{packing number}\index{packing number} $\nu(\mathcal{C})$ is the maximum cardinality of a packing in $\mathcal{C}$.
 \end{definition}
@@ -117,14 +141,14 @@ For a nontrivial clutter $\mathcal{C}$ we have $\tau(\mathcal{C}) \geq \nu(\math
 
 \section{Blockers}
 When studying covers of a clutter, one should also look at the blocker of the clutter, which can be considered as the dual of the clutter.
-\begin{definition}
+\begin{definition}[Edmonds and Fulkerson \cite{blocker}]
     Let $\mathcal{C}$ be a clutter over ground set $V$.
     The \emph{blocker}\index{blocker} $b(\mathcal{C})$ is the clutter over ground set $V$ with the minimal covers of $\mathcal{C}$ as members.
 \end{definition}
 
 Taking the blocker of a clutter is an involution:
 
-\begin{lemma}[\cite{blocker}]
+\begin{lemma}[Edmonds and Fulkerson \cite{blocker}]
     A clutter $\mathcal{C}$ satisfies $b(b(\mathcal{C}))=\mathcal{C}$.
 \end{lemma}
 
@@ -145,13 +169,13 @@ Taking the blocker of a clutter is an involution:
 
 
 \section{Minors and restrictions}
-\begin{definition}
+\begin{definition}[Seymour \cite{binary}]
     Let $\mathcal{C}$ be a clutter over ground set $V$ and $I, J \subseteq V$ disjoint subsets.
     The \emph{minor}\index{minor} of $\mathcal{C}$ obtained after \emph{deleting} $I$ and \emph{contracting} $J$ is the clutter $\mathcal{C} \backslash I / J$ over ground set $V - (I \cup J)$ whose members are the inclusion-wise minimal sets of $\{C-J : C~\in~\mathcal{C},\, C~\cap~I = \emptyset\}$.
     If $I \cup J \neq \emptyset$ the minor is called \emph{proper}.
 \end{definition}
 
-\begin{definition}
+\begin{definition}[Abdi, Cornuéjols and Lee \cite{restrictions}]
     Let $\mathcal{C}$ be a clutter over ground set $V$ and $I \subseteq V$ such that $I$ is not a cover of $\mathcal{C}$.
     Let
     \begin{align*}
@@ -166,99 +190,133 @@ For every member $C \in \mathcal{C} \backslash I /J$ the set $C \cup J$ is a mem
 Since $I$ is not a cover, there exists a member $C \in \mathcal{C} \backslash I /J$.
 
 \begin{remark}
-    In the definition of a restriction in \cite{restrictions} by Abdi, Cornuéjols and Lee, it is allowed to restrict a cover.
+    In the definition of a restriction in by Abdi, Cornuéjols and Lee \cite{restrictions}, it is allowed to restrict a cover.
     The reason for the additional constraint is that we are often interested in the existence of members with certain properties.
-    If all members of the clutter fulfil that property we would need to prove that there is at least a member and consider the case anyway.
+    If all members of the clutter fulfil that property, we would need to prove that there is at least a member and consider the case anyway.
 \end{remark}
 
 The following lemma shows the effect on the blocker when taking a minor of a clutter.
-\begin{lemma}
+\begin{lemma}[Seymour \cite{binary}, Lemma 4]
     Let $\mathcal{C}$ be a clutter over ground set $V$ and $I,J \subseteq V$ be disjoint.
-    Then $b(\mathcal{C}\backslash I /J) = b(\mathcal{C} \backslash J / I)$.
+    Then $b(\mathcal{C}\backslash I /J) = b(\mathcal{C}) \backslash J / I$.
 \end{lemma}
 
 \begin{proof}
-    Let $B' \in b(\mathcal{C}\backslash I /J)$. Then $B'$ is a cover of $\mathcal{C}\backslash I /J$.
+    We show that each member of $b(\mathcal{C}\backslash I /J)$ contains a member of $b(\mathcal{C}) \backslash J /I$ and vice versa.
+    Note that if one clutter is $\{\}$, one direction trivially holds and the other direction proves that they are both the clutter $\{\}$.
+
+    Let $B' \in b(\mathcal{C}\backslash I /J)$.
+    Then $B'$ is a cover of $\mathcal{C}\backslash I /J$.
     Hence, $B' \cup I$ is a cover of $\mathcal{C}$.
     So $B' \cup I$ contains a member of $b(\mathcal{C})$. Thus, it also contains a member of $b(\mathcal{C})\backslash J$ and $(B' \cup I)-I=B'$ contains a member of $b(\mathcal{C})\backslash J /I$.
 
     Let now $B \in b(\mathcal{C})\backslash J/I$. Therefore, $B \cup I$ contains a member in $b(\mathcal{C})$. Thus $B \cup I$ is a cover of $\mathcal{C}$. Therefore, $B$ is a cover of $\mathcal{C}\backslash I /J$ since each member of $\mathcal{C}$ is either deleted or contains an element of $B$. Thus, $B$ contains a member in $b(\mathcal{C}\backslash I /J)$.
-    By \hyperref[equalclutters]{Lemma \ref*{equalclutters}}, we conclude $b(\mathcal{C}\backslash I /J) = b(\mathcal{C} \backslash J / I)$.
+    By \hyperref[equalclutters]{Lemma \ref*{equalclutters}}, we conclude $b(\mathcal{C}\backslash I /J) = b(\mathcal{C}) \backslash J / I$.
 \end{proof}
 
 
 \section{Intersecting clutters}
-\begin{definition}
-    A clutter is \emph{intersecting} if $\tau(\mathcal{C}) > \nu(\mathcal{C}) = 1$. This means that every two members intersect, but not all members have a common element.
+\begin{definition}[Abdi, Cornuéjols and Lee \cite{restrictions}]
+    A clutter is \emph{intersecting} if $\tau(\mathcal{C}) \geq 2$ and $\nu(\mathcal{C}) = 1$.
+    This means that every two members intersect, but not all members have a common element.
     The trivial clutters are not intersecting.
 \end{definition}
+
 We will now see a few examples of intersecting clutters that will also play a major role throughout this entire work.
 
 Take the clutter over ground set $\{1,2,\ldots,6\}$ with members $\{1,3,5\}, \{1,4,6\}, \{2,3,6\}$ and $\{2,4,5\}$.
-Note that this clutter, denoted by $Q_6$\index{$Q_6$}\cite{q6}, can be represented as the triangles of $K_4$, the complete graph on four vertices whose edges are the ground set of this clutter. Usually clutters are represented by hypergraphs with the ground set as vertex set. In this representation, the edges are the ground set.
-There is no cover of size one since after deleting an arbitrary edge of $K_4$, a triangle is remaining.
+Note that this clutter, denoted by $Q_6$\index{$Q_6$}\cite{q6}, can be represented as the triangles of $K_4$, the complete graph on four vertices whose edges are the ground set of this clutter (Figure 1.1). Usually clutters are represented by hypergraphs with the ground set as vertex set. In this representation, the edges are the ground set.
+After deleting an arbitrary edge of $K_4$, at least one triangle is remaining.
+Therefore, $Q_6$ has no cover of size 1.
 Furthermore, there are no disjoint members since two disjoint triangles would use up all the edges and the parity at the vertices must be even, which is not the case.
 Thus, $\tau(Q_6) > \nu(Q_6) = 1$, so $Q_6$ is an intersecting clutter.
 
-    \begin{figure}[b]
+
+            \begin{figure}[b]
+                \centering
+                \begin{tikzpicture}[scale=2.5]
+
+                    \draw[red] (0,0) -- node[below, black] {1} (1,0);
+                    \draw (0,0) --  (0.4,0.4) -- node[above, black] {5} (1,1);
+                    \draw[red] (0,0) -- node[left, black]{4} (0,1);
+                    \draw[red] (1,0) -- (0.6, 0.4) -- node[below, black]{6} (0,1);
+                    \draw (1,0) -- node[right, black]{3} (1,1);
+                    \draw (0,1) -- node[above, black]{2} (1,1);
+
+                \end{tikzpicture}
+                \captionof{figure}{One member of $Q_6$}
+        \end{figure}
+
+
+
+        Let $n \geq 3$ be an integer.
+        Take the clutter over ground set $\{1,2,\ldots,n\}$ with members $\{1,2\},\{1,3\},\ldots,\{1,n\}$ and $\{2,3,\ldots,n\}$.
+        This clutter is called $\Delta_n$ and a clutter isomorphic to this clutter is called a \emph{delta of dimension $n$}\index{delta} \cite{deltadefinition}.
+        Observe that $b(\Delta_n)=\Delta_n$.
+        A delta clearly does not have disjoint members and $n\geq 3$ implies that there is no cover of size 1.
+        Hence, deltas are intersecting clutters.
+
+        Let $n\geq 5$ be an odd integer.
+        Consider the clutter $\mathcal{C}$ over ground set $\{1,2,\ldots,n\}$ such that the minimum cardinality members of $\mathcal{C}$ are $\{1,2\},\{2,3\},\ldots,\{n-1,n\}$ and $\{n,1\}$.
+        A clutter that is isomorphic to $\mathcal{C}$ is an \emph{extended odd hole of dimension $n$}\index{extended odd hole} \cite{deltas}.
+        Obviously, an extended odd hole is not intersecting since there are disjoint members.
+        But the blocker of an extended odd hole is intersecting.
+        Every minimal cover of $\mathcal{C}$ has at least $\frac{n+1}2$ elements since $n$ is odd.
+        Therefore, two minimal covers cannot be disjoint, so the blocker of an extended odd hole does not have disjoint members.
+        Moreover, the blocker of the blocker of an extended odd hole is an extended odd hole and has no member of size 1.
+        Therefore, the blocker of an extended odd hole does not have covers of size 1.
+        Hence, blockers of extended odd holes are intersecting clutters.
+
+
+    \begin{figure}[t]
         \centering
-        \begin{minipage}{.4\textwidth}
-            \centering
-            \begin{tikzpicture}[scale=2]
+            \begin{minipage}{.4\textwidth}
+                \centering
+                \begin{tikzpicture}[scale=1.2]
+                    \filldraw (1,0) circle (2pt);
+                    \filldraw (2,0) circle (2pt);
+                    \filldraw (3,0) circle (2pt);
+                    \filldraw (4,0) circle (2pt);
+                    \filldraw (5,0) circle (2pt);
+                    \filldraw (3,1) circle (2pt);
+                    \foreach \i in {1,...,5}
+                    {
+                        \draw (3,1) -- (\i,0);
+                    }
+                    \draw (3,0) ellipse (2.5 and 0.4);
+                \end{tikzpicture}
+                \captionof{figure}{$\Delta_6$}
+            \end{minipage}
+            \begin{minipage}{.4\textwidth}
+                \centering
+                \begin{tikzpicture}[scale=1.5]
+                    \def\x{360/7};
+                    \filldraw (\x:1) circle (2pt);
+                    \filldraw (2*\x:1) circle (2pt);
+                    \filldraw (3*\x:1) circle (2pt);
+                    \filldraw (4*\x:1) circle (2pt);
+                    \filldraw (5*\x:1) circle (2pt);
+                    \filldraw (6*\x:1) circle (2pt);
+                    \filldraw (7*\x:1) circle (2pt);
+                    \foreach \i in {0,...,6}
+                    {
+                        \draw (\i*\x:1) -- (\i*\x+\x:1);
+                    }
+                    \coordinate (A) at ($ (\x:1) + (0.3,0.3) $ );
+                    \coordinate (B) at ($ (3*\x:1) + (-0.3,0.15) $ );
+                    \coordinate (C) at ($ (5*\x:1) + (0,-0.4) $ );
+                    \draw [rounded corners=5mm] (A)--(B) --(C)--cycle;
+                \end{tikzpicture}
+                \captionof{figure}{An extended odd hole of dimension 7}
+            \end{minipage}
+        \end{figure}
 
-                \draw[red] (0,0) -- (1,0);
-                \draw (0,0) -- (1,1);
-                \draw[red] (0,0) -- (0,1);
-                \draw[red] (1,0) -- (0,1);
-                \draw (1,0) -- (1,1);
-                \draw (0,1) -- (1,1);
-
-            \end{tikzpicture}
-            \captionof{figure}{One member of $Q_6$}
-        \end{minipage}
-        \begin{minipage}{.4\textwidth}
-            \centering
-            \begin{tikzpicture}[scale=1.5]
-                \filldraw (1,0) circle (2pt);
-                \filldraw (2,0) circle (2pt);
-                \filldraw (3,0) circle (2pt);
-                \filldraw (4,0) circle (2pt);
-                \filldraw (5,0) circle (2pt);
-                \filldraw (3,1) circle (2pt);
-                \foreach \i in {1,...,5}
-                {
-                    \draw (3,1) -- (\i,0);
-                }
-                \draw (3,0) ellipse (2.5 and 0.4);
-            \end{tikzpicture}
-            \captionof{figure}{$\Delta_6$}
-        \end{minipage}
-    \end{figure}
-
-
-Let $n \geq 3$ be an integer.
-Take the clutter over ground set $\{1,2,\ldots,n\}$ with members $\{1,2\},\{1,3\},\ldots,\{1,n\}$ and $\{2,3,\ldots,n\}$.
-This clutter is called $\Delta_n$ and a clutter isomorphic to this clutter is called a \emph{delta of dimension $n$}\index{delta} \cite{deltadefinition}.
-Observe that $b(\Delta_n)=\Delta_n$.
-A delta clearly does not have disjoint members and $n\geq 3$ implies that there is no cover of size 1.
-Hence, deltas are intersecting clutters.
-
-Let $n\geq 5$ be an odd integer.
-Consider the clutter $\mathcal{C}$ over ground set $\{1,2,\ldots,n\}$ such that the minimum cardinality members of $\mathcal{C}$ are $\{1,2\},\{2,3\},\ldots,\{n-1,n\}$ and $\{n,1\}$.
-A clutter that is isomorphic to $\mathcal{C}$ is an \emph{extended odd hole of dimension $n$}\index{extended odd hole} \cite{deltas}.
-Obviously, an extended odd hole is not intersecting since there are disjoint members.
-But the blocker of an extended odd hole is intersecting.
-Every minimal cover of $\mathcal{C}$ has at least $\frac{n+1}2$ elements since $n$ is odd.
-Therefore, two minimal covers cannot be disjoint, so the blocker of an extended odd hole does not have disjoint members.
-Moreover, the blocker of the blocker of an extended odd hole is an extended odd hole and has no member of size 1.
-Therefore, the blocker of an extended odd hole does not have covers of size 1.
-Hence, blockers of extended odd holes are intersecting clutters.
-\newline
-
-The following lemma is a useful tool to find a delta minor. We will need it in the fourth chapter.
-\begin{lemma}[\cite{deltas}, Theorem 5]\label{finddelta}
-    Let $\mathcal{C}$ be a clutter over ground set $V$. Let $u,v,w \in V$ be distinct elements such that $\{u,v\}, \{u,w\}$ and $C$ are members of $\mathcal{C}$ satisfying $\{u,v,w\}~\cap~C = \{v,w\}$. Then $\mathcal{C}$ has a delta minor.
-\end{lemma}
+        The following lemma is a useful tool to find a delta minor. We will need it in the fourth chapter.
+        \begin{lemma}[Abdi, Lee and Pashkovich \cite{ideal}, see also \cite{deltas}, Theorem 5]\label{finddelta}
+            Let $\mathcal{C}$ be a clutter over ground set $V$. Let $u,v,w \in V$ be distinct elements and  such that $\{u,v\}$ and $\{u,w\}$ are members of $\mathcal{C}$.
+            Let $C \in \mathcal{C}$ such that $\{u,v,w\}\cap C = \{v,w\}$.
+            Then $\mathcal{C}$ has a delta minor.
+        \end{lemma}
 
 \begin{proof}
     Let $I=V-(C \cup \{u\})$. Let $C_1 = \{x \in C: \{u,x\} \in \mathcal{C}\}$ and let $C_2=C-C_1$. Note that $|C_1|\geq 2$ as $v,w \in C_1$.
@@ -274,7 +332,7 @@ The following lemma is a useful tool to find a delta minor. We will need it in t
 
 \section{Dense clutters}
 Intersecting clutters do not have a packing of value 2. In dense clutters we do not even allow a fractional packing of value 2.
-\begin{definition}
+\begin{definition}[Schrijver \cite{combopt}, Volume C, Chapter 77.7]
     Let $\mathcal{C}$ be a clutter over ground set $V$.
     A \emph{fractional packing}\index{fractional packing} is a vector $y \in \IR_{\geq0}^{\mathcal{C}}$ such that
     \begin{align*}
@@ -282,7 +340,8 @@ Intersecting clutters do not have a packing of value 2. In dense clutters we do 
     \end{align*}
     The \emph{value} of the fractional packing is $\textbf{1}^Ty$.
 \end{definition}
-\begin{definition}
+
+\begin{definition}[Abdi, Cornuéjols and Lee \cite{restrictions}]
     A clutter $\mathcal{C}$ is called \emph{dense}\index{dense} if $\tau(\mathcal{C}) \geq 2$ and $\mathcal{C}$ has no fractional packing of value 2.
 \end{definition}
 
@@ -291,21 +350,21 @@ The converse is not necessarily true.
 The intersecting clutter $Q_6$ of triangles in the $K_4$ has a fractional packing of value 2 by assigning $\frac 12$ to each of the four triangles.
 
 The following result gives a certificate for a dense clutter.
-\begin{lemma}\label{certificate}
+\begin{lemma}[Abdi, Cornuéjols and Lee \cite{restrictions}, Lemma 1.6]\label{certificate}
     Let $\mathcal{C}$ be a clutter with $\tau(\mathcal{C})\geq 2$ over ground set $V$.
     Then the following are equivalent:
     \leavevmode
     \begin{enumerate}[(i)]
         \item $\mathcal{C}$ is dense,
-        \item there is a $w \in \IR_{\geq 0}^V$ with $\textbf{1}^Tw=1$ such that $\sum_{u \in C} w_u > \frac 12$ for all C $\in \mathcal{C}$.
+        \item there is a $w \in \IR_{\geq 0}^V$ with $\textbf{1}^Tw=1$ such that $\sum_{u \in C} w_u > \frac 12$ for all $C \in \mathcal{C}$.
     \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-    Consider the following dual pair of linear programs
-    \newline
-    \newline
-    \begin{minipage}{.5\linewidth}
+    Consider the following dual pair of linear programs:
+
+    \begin{minipage}{.4\textwidth}
+        \centering
         \begin{equation*}
             \begin{array}{l@{\quad} r l l}
                 (P)\\
@@ -316,7 +375,8 @@ The following result gives a certificate for a dense clutter.
             \end{array}
         \end{equation*}
     \end{minipage}
-    \begin{minipage}{.5\linewidth}
+    \begin{minipage}{.4\textwidth}
+        \centering
         \begin{equation*}
             \begin{array}{l@{\quad} r l l}
                 (D)\\
@@ -327,8 +387,8 @@ The following result gives a certificate for a dense clutter.
             \end{array}
         \end{equation*}
     \end{minipage}
-    \newline
-    \newline
+
+    \vspace{1cm}
     Observe that (i) holds if and only if the optimal value of (D) is greater than $\frac 12$. Statement (ii) holds if and only if the optimal value of (P) is greater than $\frac 12$.
     From strong duality we get the equivalence.
 \end{proof}
@@ -338,7 +398,7 @@ The following result gives a certificate for a dense clutter.
 \end{remark}
 
 In contrast to $Q_6$ we get the following consequence:
-\begin{corollary}
+\begin{corollary}[Abdi, Cornuéjols and Lee \cite{restrictions}, Remark 1.7]
     Deltas and blockers of extended odd holes are dense.
 \end{corollary}
 
@@ -349,9 +409,8 @@ In contrast to $Q_6$ we get the following consequence:
 
 \section{Ideal clutters}
 Let $\mathcal{C}$ be a clutter over ground set $V$. Consider the following dual pair of linear programs with a given weight $w \in \IZ^V_{\geq 0}$:
-\newline
-\newline
-    \begin{minipage}{.5\linewidth}
+
+    \begin{minipage}{.4\textwidth}
         \begin{equation*}
             \begin{array}{l@{\quad} r l l}
                 (P)\\
@@ -361,7 +420,7 @@ Let $\mathcal{C}$ be a clutter over ground set $V$. Consider the following dual 
             \end{array}
         \end{equation*}
     \end{minipage}
-    \begin{minipage}{.5\linewidth}
+    \begin{minipage}{.4\textwidth}
         \begin{equation*}
             \begin{array}{l@{\quad} r l l}
                 (D)\\
@@ -371,14 +430,18 @@ Let $\mathcal{C}$ be a clutter over ground set $V$. Consider the following dual 
             \end{array}
         \end{equation*}
     \end{minipage}
-   \newline
-   \newline
+
+   \vspace{1cm}
    An integral solution of $(P)$ is a cover of the clutter. The value of that cover is weighted by $w$. If $w=\textbf{1}$, an integral solution of $(D)$ is a packing of $\mathcal{C}$ and any solution is a fractional packing.
    In general, the covers and packings in these programs are called \emph{weighted covers} and \emph{weighted packings}.
 
-   \begin{definition}
+   \begin{definition}[Seymour \cite{q6}]
        A clutter is called \emph{ideal} if $(P)$ has an integral optimal solution for all $w \in \IZ^V_{\geq 0}$. A clutter has the \emph{max-flow min-cut} property if $(D)$ has an integral optimal solution for all $w \in \IZ^V_{\geq 0}$.
    \end{definition}
+   \begin{remark}
+       Seymour \cite{q6} said that ideal clutters have the weak MFMC property. The terminology of ideal clutters was introduced by Cornuéjols and Novick \cite{idealdef}.
+   \end{remark}
+
    Note that idealness of a clutter $\mathcal{C}$ is equivalent to integrality of the polyhedron $\{x \in \IR^V_{\geq 0}: x(C) \geq 1 \; \forall C \in \mathcal{C}\}$.
    The max-flow min-cut property is equivalent to the set covering program $(P)$ being totally dual integral.
    By a classic result of Edmonds and Giles \cite{tdi}, totally dual integrality implies primal integrality.
@@ -393,9 +456,15 @@ Let $\mathcal{C}$ be a clutter over ground set $V$. Consider the following dual 
    Intersecting clutters are a relatively easy class of clutters that do not have the max-flow min-cut property as they do not satisfy $\tau(\mathcal{C})=\nu(\mathcal{C})$. Dense clutters are a relatively simple class of clutters that are non-ideal, as even for $w=\textbf{1}$ the covering number is not equal to the value of an optimal fractional packing.
 
 \chapter{The unifying theorem}
-This chapter provides a polynomial characterization whether a clutter has a restriction with a certain property.
-This is a generalization of Theorem 1.3 and Theorem 1.9 of \cite{restrictions}.
-A common feature is the need of members whose union is the ground set in a clutter that is minimal with respect to the given property.
+
+Abdi, Cornuéjols and Lee proved that an intersecting clutter with no proper intersecting restriction has three members whose union is the ground set \cite{restrictions}.
+Then they applied that result to give a polynomial characterization whether a clutter has an intersecting restriction.
+This is equivalent to having an intersecting minor.
+They used the analogue approach to obtain a polynomial characterization whether a clutter has a dense restriction.
+
+We will generalize that approach to arbitrary set of clutters $\mathcal{S}$.
+In this chapter, we will prove how to get the polynomial characterization given that restriction-minimal clutters have some members whose union is the ground set.
+
    \begin{definition}
        Let $\mathcal{S}$ be a set of clutters.
        A clutter $\mathcal{C} \in \mathcal{S}$ is called \emph{restriction-minimal}\index{restriction-minimal} in $\mathcal{S}$ if no proper restriction of $\mathcal{C}$ is in $\mathcal{S}$.
@@ -419,7 +488,7 @@ A common feature is the need of members whose union is the ground set in a clutt
 
    \begin{proof}
        ($\impliedby$) is immediate.
-       ($\implies$) Since clutters have finite ground set, $\mathcal{C}$ has a restriction-minimal restriction in $S$.
+       ($\implies$) Since clutters have finite ground set, $\mathcal{C}$ has a restriction-minimal restriction in $\mathcal{S}$.
        Let this restriction be $\mathcal{C}\backslash I / J$.
        Since $\mathcal{S}$ is $k$-unifying we find $k$ members $C_1', C_2', \ldots, C_k'$ in this restriction such that $\bigcup_{i=1}^k C_i' = V - (I \cup J)$.
        Let $C_i = C_i' \cup J$, which are members of $\mathcal{C}$.
@@ -428,7 +497,7 @@ A common feature is the need of members whose union is the ground set in a clutt
    \begin{corollary}
        Let $\mathcal{C}$ be a clutter over ground set $V$ with $n$ elements and $m$ members.
        Let $\mathcal{S}$ be a $k$-unifying set of clutters for a fixed $k\geq 2$.
-       Furthermore, there is an oracle given which decides for a given clutter whether it is in $\mathcal{S}$ in polynomial time.
+       Furthermore, there is an oracle given, which decides whether a given clutter is in $\mathcal{S}$ in polynomial time.
        Then one can decide in polynomial time dependent on $n$ and $m$ whether $\mathcal{C}$ has a restriction in $\mathcal{S}$.
    \end{corollary}
 
@@ -443,10 +512,11 @@ A common feature is the need of members whose union is the ground set in a clutt
    We get polynomial time algorithms to decide whether a clutter has an intersecting/dense restriction as long as the members of the clutter are given explicitly.
 
    \chapter{Intersecting restrictions}
-   This chapter gives a simplified proof for Proposition 3.3 in \cite{restrictions}.
-   Instead of delta minors, we will use a simple minimality argument.
-   The statement is also slightly generalized with the concept of $k$-wise intersection introduced in \cite{k-wise} because that does not change the proof.
-   \begin{definition}
+   This chapter gives a simplified proof for the statement that intersecting clutters with no proper intersecting restriction have three members whose union is the ground set \cite{restrictions}.
+   Abdi, Cornuéjols and Lee used a tool for finding delta minors.
+   We will instead utilize a simple minimality argument.
+   The statement is also slightly generalized with the concept of $k$-wise intersection introduced by Abdi et al \cite{k-wise} because that does not change the proof.
+   \begin{definition}[Abdi et al \cite{k-wise}]
        A nontrivial clutter is called \emph{$k$-wise intersecting} if it has no cover of size 1 and every $k$ members (not necessarily different) have a common element.
    \end{definition}
 
@@ -481,12 +551,12 @@ A common feature is the need of members whose union is the ground set in a clutt
    \end{proof}
 
    For intersecting clutters we get the following consequence:
-   \begin{corollary}[\cite{restrictions}, Proposition 3.3]
+   \begin{corollary}[Abdi, Cornuéjols and Lee \cite{restrictions}, Proposition 3.3]
        The set of intersecting clutters is 3-unifying.
    \end{corollary}
    We thereby have a polynomial characterization whether a clutter has an intersecting restriction. As the following lemma shows, that implies a polynomial characterization whether a clutter has an intersecting minor.
 
-   \begin{lemma}[\cite{restrictions}, Remark 1.2]\label{intersectingminor}
+   \begin{lemma}[Abdi, Cornuéjols and Lee \cite{restrictions}, Remark 1.2]\label{intersectingminor}
        A clutter has an intersecting restriction if and only if it has an intersecting minor.
    \end{lemma}
 
@@ -504,20 +574,19 @@ A common feature is the need of members whose union is the ground set in a clutt
 
 
    \chapter{Dense restrictions}
-   In this chapter, we will prove that the set of dense clutters is 3-unifying.
-   This is a reformulation of Proposition 4.5 in \cite{restrictions}.
-   For the proof of this proposition Abdi, Cornuéjols and Lee used a tool to find a delta or an extended odd hole minor presented by Abdi and Lee in \cite{deltas}. They also used the fact that dense clutters have a delta or the blocker of an extended odd hole minor, which is also given by \cite{deltas}.
-
+   Abdi, Cornuéjols and Lee showed that dense clutters with no proper dense restriction have three members whose union is the ground set \cite{restrictions}.
+   This is equivalent to the set of dense clutters being 3-unifying.
+   They used a tool to find a delta or an extended odd hole minor presented by Abdi and Lee \cite{deltas}.
+   They also used the fact that dense clutters have a delta or the blocker of an extended odd hole minor, which is also given by \cite{deltas}.
 
    Instead of using these tools, we will give an alternate proof for them using the structure of minimally dense clutters. These are clutters with no proper dense minor.
    We will use similar ideas translated to this slightly different setting, but also some new ones.
    The focus will be on the structure of covers of size 2 in clutters with a fractional packing of value 2 provided by \hyperref[bipartite]{Lemma \ref*{bipartite}}.
 
    This observation allows for some simplifications in the proof and some deeper insight into the structure of dense clutters.
-   The simplification also turns into an improvement of the running time in the algorithm for finding a delta or the blocker of an extended odd hole minor. This improved algorithm will be discussed in chapter 5.
+   The simplification also turns into an improvement of the running time in the algorithm for finding a delta or the blocker of an extended odd hole minor. This improved algorithm will be discussed in Chapter 5.
 
 The remaining proof of the statement that the set of dense clutters is 3-unifying is also slightly simplified by using the structure of minimally dense clutters.
-\newline
 
 Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the graph with vertex set $V$ with the members of cardinality 2 as edges \cite{deltas}. We will consider this graph of the blocker.
 
@@ -563,7 +632,9 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
         \end{minipage}
     \end{figure}
 
-    The following lemma analyses the structure of covers of size 2 in clutters with a fractional packing of value 2. A similar observation was made by Abdi, Cornuéjols and Superdock in Lemma 14 of \cite{lemma}, though they assumed the covering graph to be bipartite.
+    The following lemma analyses the structure of covers of size 2 in clutters with a fractional packing of value 2.
+    The key observation is that each member in the fractional packing intersects each cover of size 2 in exactly one element.
+    This fact was also noted by Abdi, Cornuéjols and Lee \cite{ideal}.
 
    \begin{lemma}\label{bipartite}
        Let $\mathcal{C}$ be a clutter over ground set $V$ with $\tau(\mathcal{C})=2$, connected covering graph, and a fractional packing of value 2.
@@ -688,20 +759,37 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
        Therefore, this minor has a member $C' \subseteq X$.
        It implies a member $C \subseteq X \cup \{y\}$ in $\mathcal{C}$, a contradiction to $B$ being a cover. So $Z \subseteq B$.
 
-       If $|Z|\geq 2$, the blocker of $\mathcal{C}$ has members $\{x,z_1\},\{x,z_2\}$ and $B$ such that $B \cap \{x,z_1,z_2\}=\{z_1,z_2\}$. Applying \hyperref[finddelta]{Lemma \ref*{finddelta}} yields that $b(\mathcal{C})$ has a delta minor. Let $b(\mathcal{C})\backslash I /J=\Delta_n$. By taking the blocker of both sides, we get $\mathcal{C} \backslash J / I = b(\Delta_n)=\Delta_n$.
+       If $|Z|\geq 2$, the blocker of $\mathcal{C}$ has members $\{x,z_1\},\{x,z_2\}$.
+       As $B$ is a minimal cover of $\mathcal{C}$, it is a member of $b(\mathcal{C})$.
+       Furthermore, we have $B \cap \{x,z_1,z_2\}=\{z_1,z_2\}$.
+       Applying \hyperref[finddelta]{Lemma~\ref*{finddelta}} yields that $b(\mathcal{C})$ has a delta minor.
+       Let $b(\mathcal{C})\backslash I /J=\Delta_n$.
+       By taking the blocker of both sides, we get $\mathcal{C} \backslash J / I = b(\Delta_n)=\Delta_n$.
        Thus, $\mathcal{C}$ has a delta minor. Since deltas are dense, $\mathcal{C}$ is a delta.
 
-       If $|Z|<2$ consider the minor $\mathcal{C}\backslash Z /x$. This minor has no cover of size 1 because even if $|Z|=1$ there is no edge incident to $z \in Z$ other than $\{x,z\}$. Furthermore, this minor is not trivial as we would have $|V|\leq 2$.
-       As that minor also has a connected covering graph, we find a member $C' \subseteq X$. This implies a member $C \subseteq X$ of $\mathcal{C}$, a contradiction to $Y$ being a cover.
+       If $|Z|<2$ consider the minor $\mathcal{C}\backslash Z /x$.
+       This minor has no cover of size 1 because even if $|Z|=1$ there is no edge incident to $z \in Z$ other than $\{x,z\}$.
+       Furthermore, this minor is not trivial as we would have $|V|\leq 2$.
+       As that minor also has a connected covering graph, we find a member $C' \subseteq X$.
+       This implies a member $C \subseteq X$ of $\mathcal{C}$, a contradiction to $Y$ being a cover.
 
        In conclusion, each case led to a contradiction or a delta or the blocker of an extended odd hole.
    \end{proof}
 
-   We can deduce two important corollaries from that proposition. Firstly, given a dense clutter there is always a delta or the blocker of an extended odd hole minor. The above proof also implies an algorithm for finding this minor, which will be discussed in chapter 5.
+   Note that a similar result is known for minimally non-idel clutters.
+   These are non-ideal clutters such that every proper minor is ideal.
+   An odd hole is an extended odd hole with no member of cardinality more than 2.
+   \begin{theorem}[Lehman \cite{lehman}, see also \cite{seymour} and \cite{ideal}, Theorem 4.6]
+       Let $\mathcal{C}$ be a minimally non-ideal clutter with $\tau(\mathcal{C})=2$. Then $\mathcal{C}$ is a delta or the blocker of an odd hole.
+   \end{theorem}
 
-   Secondly, we also get the foundation for the proof that dense clutters are 3-unifying. In the end, this yields a polynomial time algorithm to decide whether a clutter has a delta or the blocker of extended odd hole minor. We can also find a dense minor to start the algorithm of chapter 5.
+   Of course, the assumption that every proper minor is ideal is much stronger than the assumption that every proper minor with covering number at least 2 has a fractional packing of value 2.
 
-   \begin{corollary}[\cite{deltas}, Theorem 3]\label{findminor}
+   We can deduce two important corollaries from \hyperref[mindense]{Proposition \ref*{mindense}}. Firstly, given a dense clutter there is always a delta or the blocker of an extended odd hole minor. The above proof also implies an algorithm for finding this minor, which will be discussed in Chapter 5.
+
+   Secondly, we also get the foundation for the proof that dense clutters are 3-unifying. In the end, this yields a polynomial time algorithm to decide whether a clutter has a delta or the blocker of extended odd hole minor. We can also find a dense minor to start the algorithm of Chapter 5.
+
+   \begin{corollary}[Abdi and Lee \cite{deltas}, Theorem 3]\label{findminor}
        Let $\mathcal{C}$ be a dense clutter over ground set $V$ such that $\tau(\mathcal{C}) \geq 2$.
        Then $\mathcal{C}$ has a delta or the blocker of an extended odd hole minor.
    \end{corollary}
@@ -709,6 +797,9 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
    \begin{proof}
        This is immediate from the fact that each dense clutter has a minimally dense minor.
    \end{proof}
+
+   Note that \hyperref[mindense]{Proposition \ref*{mindense}} is not a stronger result because using this corollary implies that a minimally dense minor has a delta or the blocker of an extended odd hole minor.
+   Such a minor is dense, so it cannot be a proper minor.
 
    \begin{corollary}\label{threemember}
        Let $\mathcal{C}$ be a minimally dense clutter over ground set $V$.
@@ -730,7 +821,7 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
 
    The result of this corollary is basically Claim 2 in the proof of Proposition 4.5 in \cite{restrictions}. The members are easier to find due to the use of \hyperref[bipartite]{Lemma \ref*{bipartite}}.
 
-   This corollary also shows that a dense clutter has a delta or the blocker of an extended odd hole minor with the additional property that for each $v \in V$ we find two members $K, L \in \mathcal{C}$ such that $K \cap L = v$ and $K\cup L=V$.
+   This corollary also shows that a dense clutter has a delta or the blocker of an extended odd hole minor with the additional property that for each $v \in V$ we find two members $K, L \in \mathcal{C}$ such that $K \cap L = \{v\}$ and $K\cup L=V$.
 
    The following Lemma is a useful tool to bridge the gap from minimally dense to strictly dense clutters. It could be replaced by the proof of Claim 3 of Proposition 4.5 in \cite{restrictions} and is also quite similar, but it also gives some insight into the structure of strictly dense clutters.
    \begin{lemma}\label{covers}
@@ -749,7 +840,7 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
 
    We are now ready to prove the main proposition of this chapter.
    The idea of the proof is the same as the one given by Claim 1 in the proof given by \cite{restrictions} and the rest of the proof is covered by the previous lemmas.
-   \begin{proposition}[\cite{restrictions}, Proposition 4.5]
+   \begin{proposition}[Abdi, Cornuéjols and Lee \cite{restrictions}, Proposition 4.5]
        The set of dense clutters is 3-unifying.
    \end{proposition}
 
@@ -768,12 +859,12 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
        We will proof $C_1 \cup C_2 \cup C_3 = V$.
        Suppose there is a $v \in V-(C_1 \cup C_2 \cup C_3)$.
        Clearly, $v \in U$.
-       By \hyperref[covers]{Lemma \ref*{covers}}, there is a cover $\{v,w\}$ with $w \in V-U$.
+       By \hyperref[covers]{Lemma~\ref*{covers}}, there is a cover $\{v,w\}$ with $w \in V-U$.
        Since none of the three members contains $U$, they all contain $w$, a contradiction.
    \end{proof}
 
    By the unifying theorem, given a clutter explicitly with its members, we can find a dense restriction in polynomial time or state that there is none. Similarly to \hyperref[intersectingminor]{Lemma \ref*{intersectingminor}}, having a dense restriction is equivalent to having a dense minor. Furthermore, this is also equivalent to having a delta or the blocker of an extended odd hole minor:
-   \begin{lemma}[\cite{restrictions}, Remark 4.4]
+   \begin{lemma}[Abdi, Cornuéjols and Lee \cite{restrictions}, Remark 4.4]
        Let $\mathcal{C}$ be a clutter over ground set $V$. Then the following statements are equivalent:
        \leavevmode
        \begin{enumerate}[(i)]
@@ -788,25 +879,25 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
 
        It remains to show $\text{(iii)} \implies \text{(i)}$. Let $\mathcal{C} \backslash I /J$ be a dense minor. Consider the minor $\mathcal{C'}=\mathcal{C}\backslash I/J'$ which results from restricting $I$. As $\tau(\mathcal{C}\backslash /J)\geq 2$, it follows $J' \subseteq J$. If $\mathcal{C'}$ was a trivial clutter, so would $\mathcal{C} \backslash I/J$. So $\tau(\mathcal{C'})\geq 2$.
 
-       If $\mathcal{C}$ had a fractional packing of value 2, this also implies a fractional packing for $\mathcal{C}\backslash I/J$ as elements are only contracted. Therefore $\mathcal{C'}$ is a dense restriction.
+       If $\mathcal{C'}$ had a fractional packing of value 2, this also implies a fractional packing for $\mathcal{C}\backslash I/J$ as elements are only contracted. Therefore $\mathcal{C'}$ is a dense restriction.
    \end{proof}
 
    To finish this chapter, we will prove that the fundamental theorem of \cite{deltas}, Theorem 7, can be easily deduced from the results of this chapter. This will show the connection of the proofs given in \cite{deltas} and this chapter.
 
-   \begin{theorem}[\cite{deltas}, Theorem 7]
+   \begin{theorem}[Abdi and Lee \cite{deltas}, Theorem 7]
        Let $V$ be a set of cardinality at least 4. Let $\mathcal{C}$ be a clutter over ground set $V$ where
        \[
            \min\{|C|: C \in \mathcal{C}\} = 2
-           \]
+       \]
            and the minimum cardinality members correspond to the edges of a connected bipartite graph G over vertex set $V$ whose colour classes are $R,B$. Assume that $R$ contains a member. Then $\mathcal{C}$ has a delta or an extended odd hole minor.
    \end{theorem}
 
-   We will prove the following strengthened theorem:
+   We will prove the following version of that theorem:
    \begin{theorem}
        Let $\mathcal{C}$ be a clutter over ground set $V$ where
        \[
            \min\{|C|: C \in \mathcal{C}\} = 2
-           \]
+       \]
            and the minimum cardinality members correspond to the edges of a connected graph G over vertex set $V$.
            Then at least one of the following statements holds:
            \leavevmode
@@ -814,7 +905,7 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
                \item $G$ is bipartite with colour classes $R$ and $B$ such that $B$ is a cover.
                \item $\mathcal{C}$ has a delta or an extended odd hole minor.
            \end{enumerate}
-    \end{theorem}
+   \end{theorem}
 
    \begin{proof}
        Consider the blocker $b(\mathcal{C})$.
@@ -824,23 +915,26 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
        Otherwise, $b(\mathcal{C})$ has a fractional packing of value 2 and connected covering graph as the covering graph of $b(\mathcal{C})$ is just $G$.
        By \hyperref[bipartite]{Lemma \ref*{bipartite}}, the covering graph is bipartite and we find members $K$ and $L$ of $b(\mathcal{C}$ that correspond to the colour classes. They correspond to minimal covers of $\mathcal{C}$, so $G$ is bipartite and one of the colour classes is a cover.
 
-       In each case one of the statements holds.
+       In each case, one of the statements holds.
    \end{proof}
 
    Note that Theorem 7 of \cite{deltas} immediately follows from this since $B$ being a cover is equivalent to $R$ not containing a member. Accordingly, the first statement is not possible. The condition $|V|\geq 4$ is not necessary because the only clutter satisfying the conditions with $|V|<4$ is $\Delta_3$.
 
    \chapter{Finding delta or blocker of extended hole minors}
-   In this section, we will discuss an algorithm which finds a delta or the blocker of an extended odd hole minor of a dense clutter.
+   In this chapter, we will discuss an algorithm which finds a delta or the blocker of an extended odd hole minor of a dense clutter.
+
    The clutter $\mathcal{C}$ over ground set $V$ is given by a filter oracle.
-   This oracle returns in time $\theta$ whether a set $A \subseteq V$ contains a member of $V$.
-   Filter oracles were introduced by Seymour \cite{seymour}. Instead of a constant time oracle, we specify the time required to run the oracle.
-   The algorithm implied by the proofs given in chapter 4 has a running time of $\mathcal{O}(n^3(\theta+n))$.
+   This oracle returns in time $\theta$ whether a set $A \subseteq V$ contains a member of $\mathcal{C}$.
+   Filter oracles were introduced by Seymour \cite{seymour}.
+   A clutter can have an exponential number of members.
+   The idea of filter oracles is to avoid the problem, that the input of the clutter could already be exponential in the size of the ground set. Instead of a constant time oracle, we specify the time required to run the oracle.
+   The algorithm implied by the proofs given in Chapter 4 has a running time of $\mathcal{O}(n^3(\theta+n))$.
    This improves the running time of the algorithm by Abdi and Lee in \cite{deltas} with a running time of $\mathcal{O}(n^4)$ oracle calls.
 
 
    First of all, we will look at the runtime of basic operations with filter oracles. This is also done by Abdi and Lee in \cite{deltas}.
 
-   \begin{lemma}\label{computations}
+   \begin{lemma}[Abdi and Lee \cite{deltas}, Remark 9]\label{computations}
        Let $\mathcal{C}$ be a clutter over ground set $V$ given by a filter oracle.
        Let $n=|V|$ and $\theta$ be the time required to run the oracle.
        Then the following statements hold:
@@ -862,7 +956,7 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
 
    \end{proof}
 
-   \begin{lemma}
+   \begin{lemma}[Seymour \cite{seymour}, Theorem 5.1]
        Let $\mathcal{C}$ be a clutter over ground set $V$ given by a filter oracle, which runs in time $\theta$.
        Then the filter oracle also implies a filter oracle for the blocker $b(\mathcal{C})$ running in $\theta+\mathcal{O}(|V|)$ time.
    \end{lemma}
@@ -871,7 +965,7 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
        If we want to decide whether $B \subseteq V$ contains a member in $b(\mathcal{C})$, we can instead check whether $B$ is a cover in $\mathcal{C}$. This is equivalent to $V-B$ containing a member in $\mathcal{C}$. By the filter oracle for $\mathcal{C}$, this can be done in $\theta+\mathcal{O}(|V|)$ time, as we need linear time to compute the complement.
    \end{proof}
 
-   \begin{lemma}
+   \begin{lemma}[Seymour \cite{seymour}, Theorem 5.2]
        Let $\mathcal{C}$ be a clutter over ground set $V$ given by a filter oracle, which runs in time $\theta$. Let $I,J \subseteq V$ be disjoint.
        Then the filter oracle implies a filter oracle for the minor $\mathcal{C} \backslash I /J$, which runs in time $\theta+\mathcal{O}(|V|)$.
    \end{lemma}
@@ -880,9 +974,9 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
        By the definition of a minor, $A'$ containing a member in $\mathcal{C} \backslash I / J$ is equivalent to $A = A' \cup J$ containing a member in $\mathcal{C}$, so we get a filter oracle for $\mathcal{C} \backslash I / J$. We need linear time to compute the union $A' \cup J$.
    \end{proof}
 
-   The input of the final algorithm is a dense clutter including a certificate $w \in \IR^V_{\geq 0}$ as in \hyperref[certificate]{Lemma \ref*{certificate}}. We allow a scaled certificate, that means it only has to satisfy $w(C) > \frac {w(V)}{2}$ for all members $C \in \mathcal{C}$. The certificate is necessary because, in the proof of \hyperref[connectivity]{Proposition \ref*{connectivity}}, we considered the minor $\mathcal{C} \backslash K / L$. Without the certificate, we would also need to consider the minor $\mathcal{C}\backslash L / K$. That could lead to an exponential runtime because the algorithm works recursively.
+   The input of the final algorithm is a dense clutter including a certificate $w \in \IR^V_{\geq 0}$ as in \hyperref[certificate]{Lemma \ref*{certificate}}. We allow a scaled certificate, that means it only has to satisfy $w(C) > \frac {w(V)}{2}$ for all members $C \in \mathcal{C}$. The certificate is necessary because, in the proof of \hyperref[connectivity]{Proposition~\ref*{connectivity}}, we considered the minor $\mathcal{C} \backslash K / L$. Without the certificate, we would also need to consider the minor $\mathcal{C}\backslash L / K$. That could lead to an exponential runtime because the algorithm works recursively.
 
-   Note that the certificate can be calculated with the linear program in \hyperref[certificate]{Lemma \ref*{certificate}}. However, the members are needed explicitly to do so.
+   Note that the certificate can be calculated with the linear program in \hyperref[certificate]{Lemma \ref*{certificate}}, if the members are explicitly given.
 
    We will formulate an algorithm that, given a dense clutter including a certificate, computes a delta, the blocker of an extended odd hole minor, or a proper dense minor. If the output is a proper dense minor, we will call the algorithm again. We need to make sure that a certificate for the proper dense minor can be computed easily.
 
@@ -904,8 +998,9 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
        Increase $w(x)$ by $\frac 12$ and decrease $w(y)$ by $\frac 12$ to get a certificate $w'$.
        This does not change the total sum and each member then fulfils $w'(C) \geq m + \frac 12$, so $w'$ is indeed a certificate and can be returned.
    \end{proof}
-   We are now ready to formualte the main algorithm.
-   \newline
+   We are now ready to formulate the main algorithm.
+   For better readability, it is presented on the next page.
+   \clearpage
 
    \begin{algorithm}[H]
        \SetKwInOut{Input}{Input}\SetKwInOut{Output}{Output}
@@ -947,19 +1042,21 @@ Abdi and Lee considered clutters with $\min\{|C|:C\in \mathcal{C}\}=2$ and the g
        \caption{Finding a delta or the blocker of an extended odd hole minor}
    \end{algorithm}
 
+   \vspace{1.5cm}
+
    \begin{proposition}
        The algorithm works correctly in $\mathcal{O}(n^2(\theta+n))$ time.
-       If it returns a proper dense minor, a certificate for this minor being dense can be calculated in $\mathcal{O}(n^2(\theta+n)$ time.
+       If it returns a proper dense minor, a certificate for this minor being dense can be calculated in $\mathcal{O}(n^2(\theta+n))$ time.
    \end{proposition}
 
    \begin{proof}
-       The correctness of the proof is given by the proof of \hyperref[connectivity]{Lemma \ref*{connectivity}} and \hyperref[mindense]{Proposition \ref*{mindense}}.
+       The correctness of the algorithm is given by the proof of \hyperref[connectivity]{Lemma \ref*{connectivity}} and \hyperref[mindense]{Proposition~\ref*{mindense}}.
        Whenever we get a contradiction or an excluded case in the proof due to the clutter being minimally dense, the algorithm outputs the proper dense minor.
-       Note that in almost all cases where a proper dense minor is returned, we have the situation of \hyperref[computecert]{Lemma \ref*{computecert}} with the minor $\mathcal{C}\backslash v$ in the first step and $\mathcal{C} \backslash K / L$ as the only exceptions.
+       Note that in almost all cases where a proper dense minor is returned, we have the situation of \hyperref[computecert]{Lemma~\ref*{computecert}} with the minor $\mathcal{C}\backslash v$ in the first step and $\mathcal{C} \backslash K / L$ as the only exceptions.
 
        In both cases, we can take the projection of the certificate of the original clutter on the new ground set.
        For $\mathcal{C} \backslash v$ this is a certificate because $w(C)$ does not change for members $C$, but $w(V) \geq w(V-\{v\})$.
-       For $\mathcal{C} \backslash K / L$ the argument is given in the proof of \hyperref[connectivity]{Lemma \ref*{connectivity}}.
+       For $\mathcal{C} \backslash K / L$ the argument is given in the proof of \hyperref[connectivity]{Lemma~\ref*{connectivity}}.
        The running time for the certificate is satisfied in both cases.
 
        It remains to show that the running time of the algorithm is indeed $\mathcal{O}(n^2(\theta+n))$.
